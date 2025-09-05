@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "840658812343",
+    "project_id": "book-hunter-7536a",
+    "storage_bucket": "book-hunter-7536a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:840658812343:android:2ba4950b58d96bd1fffc32",
+        "android_client_info": {
+          "package_name": "com.example.book_hunt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDy6eTYJ4HDkAAtZ-2reOd2GCiaZK4secs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
