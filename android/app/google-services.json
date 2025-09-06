@@ -12,7 +12,20 @@
           "package_name": "com.example.book_hunt"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "840658812343-jfc1auhrgt2hpgof5avsdq3in47qdl0a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.book_hunt",
+            "certificate_hash": "d6666d7fd1b3a931021b4aaedf7b2c9f7e618231"
+          }
+        },
+        {
+          "client_id": "840658812343-qsbi817fhsgu9qnugh31cj5d02gdebm0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDy6eTYJ4HDkAAtZ-2reOd2GCiaZK4secs"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "840658812343-qsbi817fhsgu9qnugh31cj5d02gdebm0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "840658812343-7g3mk2f69c7qe1u28qphu620k9f8nhlp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bookHunt"
+              }
+            }
+          ]
         }
       }
     }
