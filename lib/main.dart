@@ -1,5 +1,6 @@
 import 'package:book_hunt/providers/auth_provider.dart';
 import 'package:book_hunt/repositories/author_repository.dart';
+import 'package:book_hunt/screens/auth/log_in_screen.dart';
 import 'package:book_hunt/screens/auth/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,17 +21,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (context) => AuthProvider(AuthRepository()),
-        ),
-      ],
+      providers: [ChangeNotifierProvider(create: (context) => AuthProvider())],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),
-        home: SignInScreen(),
+        home: LoginScreen(),
       ),
     );
   }

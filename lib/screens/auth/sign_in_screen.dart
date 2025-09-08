@@ -1,4 +1,5 @@
 import 'package:book_hunt/providers/auth_provider.dart';
+import 'package:book_hunt/screens/auth/log_in_screen.dart';
 import 'package:book_hunt/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +60,7 @@ class _SignInScreenState extends State<SignInScreen> {
               child: const Text("Continue with Email"),
               onPressed: () async {
                 try {
-                  await auth.signInWithEmail(
+                  await auth.signUpWithEmail(
                     _emailController.text.trim(),
                     _passwordController.text.trim(),
                   );
@@ -75,6 +76,13 @@ class _SignInScreenState extends State<SignInScreen> {
                   );
                 }
               },
+            ),
+            InkWell(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+              ),
+              child: Text("Already have an account? login"),
             ),
             const SizedBox(height: 30),
             if (auth.isSignedIn)

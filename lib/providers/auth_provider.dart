@@ -26,9 +26,15 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  Future<void> signUpWithEmail(String email, String password) async {
+    final user = await _repo.signUpWithEmail(email, password);
+    _user = user;
+    notifyListeners();
+  }
+
   Future<void> signInWithEmail(String email, String password) async {
     try {
-      _user = await _repo.signInWithEmail(email, password);
+      _user = await _repo.logInWithEmail(email, password);
       notifyListeners();
     } catch (e) {
       debugPrint("Email Sign-In error: $e");
