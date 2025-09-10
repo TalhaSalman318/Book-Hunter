@@ -1,13 +1,15 @@
-import 'package:book_hunt/repositories/author_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthProvider with ChangeNotifier {
-  final AuthRepository _repo;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
   User? _user;
 
-  AuthProvider(this._repo) {
-    _repo.authStateChanges.listen((u) {
+  AuthProvider() {
+    _auth.authStateChanges().listen((u) {
       _user = u;
       notifyListeners();
     });
@@ -16,9 +18,20 @@ class AuthProvider with ChangeNotifier {
   User? get user => _user;
   bool get isSignedIn => _user != null;
 
+  /// 🔹 Google Sign-In
   Future<void> signInWithGoogle() async {
     try {
-      _user = await _repo.signInWithGoogle();
+      final googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) return; // user cancelled
+
+      final googleAuth = await googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential = await _auth.signInWithCredential(credential);
+      _user = userCredential.user;
       notifyListeners();
     } catch (e) {
       debugPrint("Google Sign-In error: $e");
@@ -26,24 +39,40 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  /// 🔹 Email Sign-Up
   Future<void> signUpWithEmail(String email, String password) async {
-    final user = await _repo.signUpWithEmail(email, password);
-    _user = user;
-    notifyListeners();
-  }
-
-  Future<void> signInWithEmail(String email, String password) async {
     try {
-      _user = await _repo.logInWithEmail(email, password);
+      final userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      _user = userCredential.user;
       notifyListeners();
     } catch (e) {
-      debugPrint("Email Sign-In error: $e");
+      debugPrint("Email Sign-Up error: $e");
       rethrow;
     }
   }
 
+  /// 🔹 Email Log-In
+  Future<void> logInWithEmail(String email, String password) async {
+    try {
+      final userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      _user = userCredential.user;
+      notifyListeners();
+    } catch (e) {
+      debugPrint("Email Log-In error: $e");
+      rethrow;
+    }
+  }
+
+  /// 🔹 Sign-Out
   Future<void> signOut() async {
-    await _repo.signOut();
+    await _auth.signOut();
+    await _googleSignIn.signOut();
     _user = null;
     notifyListeners();
   }
