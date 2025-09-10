@@ -1,7 +1,11 @@
+import 'package:book_hunt/core/routing.dart';
 import 'package:book_hunt/providers/auth_provider.dart';
-import 'package:book_hunt/repositories/author_repository.dart';
+import 'package:book_hunt/providers/search_provider.dart';
+import 'package:book_hunt/providers/work_detail_provider.dart';
+import 'package:book_hunt/repositories/book_repository.dart';
 import 'package:book_hunt/screens/auth/log_in_screen.dart';
-import 'package:book_hunt/screens/auth/sign_in_screen.dart';
+import 'package:book_hunt/services/network_client.dart';
+import 'package:book_hunt/services/open_library_api.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -20,14 +24,28 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final client = NetworkClient();
+    final api = OpenLibraryApi(client);
+    final repository = BookRepository(api);
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => AuthProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => SearchBooksProvider(repository)),
+        ChangeNotifierProvider(create: (_) => WorkDetailProvider(repository)),
+      ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
+
+        // 📌 Default route (jo sabse pehle open hogi)
+        initialRoute: AppRoutes.home,
+
+        // 📌 Hamara route generator
+        onGenerateRoute: AppRouter.generateRoute,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),
-        home: LoginScreen(),
+        // home: LoginScreen(),
       ),
     );
   }
