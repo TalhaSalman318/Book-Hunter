@@ -1,10 +1,11 @@
 import 'package:book_hunt/screens/home/home_screen.dart';
 import 'package:book_hunt/screens/work_detail/work_details_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:book_hunt/screens/main/main_screen.dart';
 
 // 📌 Route Names
 class AppRoutes {
-  static const String home = '/';
+  static const String main = '/';
   static const String search = '/search';
   static const String workDetail = '/work_detail';
   static const String editions = '/editions';
@@ -19,8 +20,8 @@ class AppRoutes {
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case AppRoutes.home:
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
+      case AppRoutes.main:
+        return MaterialPageRoute(builder: (_) => const MainScreen());
 
       // case AppRoutes.search:
       //   final query = settings.arguments as String?;
