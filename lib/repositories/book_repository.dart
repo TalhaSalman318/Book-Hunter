@@ -4,21 +4,28 @@ class BookRepository {
   final OpenLibraryApi api;
   BookRepository(this.api);
 
-  Future<List<dynamic>> searchBooks(String query) async {
-    final data = await api.searchBooks(query);
-    return data['docs'] ?? [];
+  /// Search books (works list)
+  Future<List<Map<String, dynamic>>> searchBooks(
+    String query, {
+    int page = 1,
+    int limit = 20,
+  }) async {
+    final data = await api.searchBooks(query, page: page, limit: limit);
+    return List<Map<String, dynamic>>.from(data['docs'] ?? []);
   }
 
+  /// Work detail
   Future<Map<String, dynamic>> getWorkDetail(String workId) async {
     return await api.getWorkDetail(workId);
   }
 
-  Future<Map<String, dynamic>> getAuthor(String authorId) async {
-    return await api.getAuthor(authorId);
-  }
-
-  Future<List<dynamic>> getEditions(String workId) async {
-    final data = await api.getEditions(workId);
-    return data['entries'] ?? [];
+  /// Editions of a work
+  Future<List<Map<String, dynamic>>> getEditions(
+    String workId, {
+    int limit = 20,
+    int offset = 0,
+  }) async {
+    final data = await api.getEditions(workId, limit: limit, offset: offset);
+    return List<Map<String, dynamic>>.from(data['entries'] ?? []);
   }
 }

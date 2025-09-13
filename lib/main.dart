@@ -1,4 +1,5 @@
 import 'package:book_hunt/core/routing.dart';
+import 'package:book_hunt/core/theme.dart';
 import 'package:book_hunt/providers/auth_provider.dart';
 import 'package:book_hunt/providers/bottom_nav_provider.dart';
 import 'package:book_hunt/providers/search_provider.dart';
@@ -45,9 +46,7 @@ class MyApp extends StatelessWidget {
 
         // 📌 Hamara route generator
         onGenerateRoute: AppRouter.generateRoute,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        ),
+        theme: appTheme,
         // home: MainScreen(),
       ),
     );
