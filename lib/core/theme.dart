@@ -15,23 +15,23 @@ class AppTextStyles {
   static const TextStyle heading1 = TextStyle(
     fontSize: 22,
     fontWeight: FontWeight.bold,
-    // color: AppColors.textColor,
+    color: AppColors.blackColor,
   );
 
   static const TextStyle heading2 = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w600,
-    // color: AppColors.textColor,
+    color: AppColors.blackColor,
   );
 
   static const TextStyle bodyText = TextStyle(
     fontSize: 14,
-    // color: AppColors.textColor,
+    color: AppColors.blackColor,
   );
 
   static const TextStyle caption = TextStyle(
     fontSize: 12,
-    // color: AppColors.grayColor,
+    color: AppColors.fontGreyColor,
   );
 }
 

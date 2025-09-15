@@ -1,16 +1,26 @@
+import 'package:book_hunt/providers/book_provider.dart';
+import 'package:book_hunt/providers/cover_provider.dart';
 import 'package:book_hunt/screens/work_detail/work_details_screen.dart';
+import 'package:book_hunt/widgets/book_card.dart';
 import 'package:book_hunt/widgets/color.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:book_hunt/providers/search_provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final searchController = TextEditingController();
+  @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<SearchBooksProvider>(context);
-    final searchController = TextEditingController();
+    final serachBookProvider = Provider.of<SearchBooksProvider>(context);
+    final coverProvider = Provider.of<CoverProvider>(context);
+    final bookProvider = Provider.of<BookProvider>(context);
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -32,7 +42,7 @@ class HomeScreen extends StatelessWidget {
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.search),
                   onPressed: () {
-                    provider.search(searchController.text);
+                    serachBookProvider.search(searchController.text);
                   },
                 ),
               ),
@@ -68,6 +78,19 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: bookProvider.searchResults.length,
+              itemBuilder: (context, index) {
+                final book = bookProvider.searchResults[index];
+
+                return BookCard(
+                  title: book['title'] ?? 'No Title',
+                  coverUrl: coverProvider.getCoverUrl(index),
+                );
+              },
             ),
           ),
         ],
