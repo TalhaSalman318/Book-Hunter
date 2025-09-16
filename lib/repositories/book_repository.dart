@@ -19,6 +19,14 @@ class BookRepository {
     return await api.getWorkDetail(workId);
   }
 
+  // Trending
+  Future<List<Map<String, dynamic>>> getTrendingBooks() async {
+    final data = await api
+        .trendingBooks(); // ye function aap OpenLibraryApi me banaoge
+    final works = data['works'] ?? [];
+    return List<Map<String, dynamic>>.from(works);
+  }
+
   /// Editions of a work
   Future<List<Map<String, dynamic>>> getEditions(
     String workId, {

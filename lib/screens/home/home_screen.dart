@@ -1,3 +1,4 @@
+import 'package:book_hunt/models/book_work.dart';
 import 'package:book_hunt/providers/book_provider.dart';
 import 'package:book_hunt/providers/cover_provider.dart';
 import 'package:book_hunt/screens/work_detail/work_details_screen.dart';
@@ -16,6 +17,18 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(
+      () => Provider.of<BookProvider>(
+        context,
+        listen: false,
+      ).fetchTrendingBooks(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final serachBookProvider = Provider.of<SearchBooksProvider>(context);
@@ -82,13 +95,16 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: bookProvider.searchResults.length,
+              scrollDirection: Axis.horizontal,
+              itemCount: bookProvider.trendingBooks.length,
               itemBuilder: (context, index) {
-                final book = bookProvider.searchResults[index];
-
+                final book = bookProvider.trendingBooks[index];
+                // // JSON ko model me convert karo
+                final bookModel = BookWorkModel.fromJson(book);
                 return BookCard(
-                  title: book['title'] ?? 'No Title',
-                  coverUrl: coverProvider.getCoverUrl(index),
+                  title: book['title'] ?? 'No title',
+                  key: ValueKey(bookModel.key),
+                  bookWorkModel: bookModel,
                 );
               },
             ),

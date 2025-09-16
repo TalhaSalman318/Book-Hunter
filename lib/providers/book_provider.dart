@@ -11,6 +11,7 @@ class BookProvider with ChangeNotifier {
   List<Map<String, dynamic>> searchResults = [];
   Map<String, dynamic>? workDetail;
   List<Map<String, dynamic>> editions = [];
+  List<Map<String, dynamic>> trendingBooks = [];
 
   /// Search books
   Future<void> searchBooks(String query) async {
@@ -29,6 +30,18 @@ class BookProvider with ChangeNotifier {
     _setLoading(true);
     try {
       workDetail = await repository.getWorkDetail(workId);
+      errorMessage = null;
+    } catch (e) {
+      errorMessage = e.toString();
+    }
+    _setLoading(false);
+  }
+
+  // Trending
+  Future<void> fetchTrendingBooks() async {
+    _setLoading(true);
+    try {
+      trendingBooks = await repository.getTrendingBooks();
       errorMessage = null;
     } catch (e) {
       errorMessage = e.toString();

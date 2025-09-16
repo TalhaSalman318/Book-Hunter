@@ -21,9 +21,14 @@ class OpenLibraryApi {
     );
   }
 
-  /// Work details
+  // Work details
   Future<Map<String, dynamic>> getWorkDetail(String workId) {
     return client.get("/works/$workId.json");
+  }
+
+  //Trending
+  Future<Map<String, dynamic>> trendingBooks() {
+    return client.get("/trending/daily.json");
   }
 
   /// Editions of a work

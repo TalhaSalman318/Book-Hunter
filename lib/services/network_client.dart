@@ -11,38 +11,32 @@ class NetworkClient {
           receiveTimeout: const Duration(seconds: 10),
           headers: {
             "Accept": "application/json",
-            "User-Agent": "BookFinder/1.0 (your_email@example.com)",
+            "User-Agent": "BookFinder/1.0 (contact@example.com)",
           },
         ),
       );
 
   Future<Map<String, dynamic>> get(
-    String endpoint, {
+    String path, {
     Map<String, dynamic>? queryParams,
   }) async {
     try {
-      final response = await _dio.get(endpoint, queryParameters: queryParams);
+      final response = await _dio.get(path, queryParameters: queryParams);
+      return response.data as Map<String, dynamic>;
+    } on DioException catch (e) {
+      throw Exception(_handleError(e));
+    }
+  }
 
-      if (response.statusCode == 200) {
-        if (response.data is Map<String, dynamic>) {
-          return response.data as Map<String, dynamic>;
-        } else {
-          throw Exception("Unexpected response format");
-        }
-      } else {
-        throw Exception(
-          "Request failed: ${response.statusCode} ${response.statusMessage}",
-        );
-      }
-    } on DioError catch (e) {
-      if (e.response?.statusCode == 429 ||
-          (e.response?.statusCode ?? 500) >= 500) {
-        // Exponential backoff retry ka placeholder (implement later agar chaho)
-        throw Exception("Server busy. Please try again later.");
-      }
-      throw Exception("Network error: ${e.message}");
-    } catch (e) {
-      throw Exception("Unexpected error: $e");
+  String _handleError(DioException e) {
+    if (e.type == DioExceptionType.connectionTimeout) {
+      return "Connection timed out. Please try again.";
+    } else if (e.type == DioExceptionType.receiveTimeout) {
+      return "Server took too long to respond.";
+    } else if (e.type == DioExceptionType.badResponse) {
+      return "Server error: ${e.response?.statusCode}";
+    } else {
+      return "Unexpected error occurred.";
     }
   }
 }
