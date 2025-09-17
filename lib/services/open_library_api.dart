@@ -31,6 +31,11 @@ class OpenLibraryApi {
     return client.get("/trending/daily.json");
   }
 
+  // Recent Added
+  Future<Map<String, dynamic>> recentAddBooks() {
+    return client.get("/recentchanges.json");
+  }
+
   /// Editions of a work
   Future<Map<String, dynamic>> getEditions(
     String workId, {

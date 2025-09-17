@@ -1,3 +1,4 @@
+import 'package:book_hunt/models/recent_add_model.dart';
 import 'package:book_hunt/services/open_library_api.dart';
 
 class BookRepository {
@@ -25,6 +26,17 @@ class BookRepository {
         .trendingBooks(); // ye function aap OpenLibraryApi me banaoge
     final works = data['works'] ?? [];
     return List<Map<String, dynamic>>.from(works);
+  }
+
+  // Recent Add
+  Future<List<RecentAddModel>> getRecentBook() async {
+    final data = await api
+        .recentAddBooks(); // ye Map<String, dynamic> return karega
+    final changes = data['changes'] as List? ?? [];
+
+    return changes
+        .map((json) => RecentAddModel.fromJson(json as Map<String, dynamic>))
+        .toList();
   }
 
   /// Editions of a work

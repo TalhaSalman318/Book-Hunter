@@ -26,14 +26,16 @@ class BookCard extends StatelessWidget {
             ),
             // child: Image.network(cover.getCoverUrl(), fit: BoxFit.cover),
           ),
-          Text(
-            title,
-            maxLines: 2, // maximum 2 lines tak allow karo
-            overflow:
-                TextOverflow.ellipsis, // agar 2 lines se lamba ho to "..."
-            softWrap: true, // line break allow karega
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          Expanded(
+            child: Text(
+              title,
+              maxLines: 2, // maximum 2 lines tak allow karo
+              overflow:
+                  TextOverflow.ellipsis, // agar 2 lines se lamba ho to "..."
+              softWrap: true, // line break allow karega
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),
