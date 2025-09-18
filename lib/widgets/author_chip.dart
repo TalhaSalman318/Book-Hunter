@@ -1,45 +1,51 @@
-import 'package:book_hunt/models/author.dart';
-import 'package:book_hunt/providers/author_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:book_hunt/models/book_work.dart';
-import 'package:book_hunt/screens/author/author_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:book_hunt/providers/author_provider.dart';
 
-// AuthorChip.dart
 class AuthorChip extends StatelessWidget {
-  final String authorKey;
+  final String authorId;
+  final VoidCallback? onTap;
 
-  const AuthorChip({super.key, required this.authorKey});
+  const AuthorChip({super.key, required this.authorId, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => AuthorScreen(authorId: authorKey)),
-        );
-      },
-      child: FutureBuilder(
-        future: Provider.of<AuthorProvider>(
-          context,
-          listen: false,
-        ).fetchAuthor(authorKey),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Chip(label: Text("Loading..."));
-          }
+    final provider = context.watch<AuthorProvider>();
+    final author = provider.getAuthor(authorId);
 
-          final author = Provider.of<AuthorProvider>(
-            context,
-            listen: true,
-          ).author;
-          return Chip(
-            label: Text(author?.name ?? "Unknown"),
-            avatar: const Icon(Icons.person, size: 18),
-            backgroundColor: Colors.blue.shade50,
-          );
-        },
+    // Agar author already provider mein cache hai to wo dikhado
+    if (author != null) {
+      return _buildChip(author.name ?? "Unknown", onTap);
+    }
+
+    // Agar author nahi mila to fetch karo
+    return FutureBuilder(
+      future: context.read<AuthorProvider>().fetchAuthor(authorId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Chip(label: Text("Loading..."));
+        }
+        if (snapshot.hasError) {
+          return const Chip(label: Text("Error"));
+        }
+
+        final fetched = provider.getAuthor(authorId);
+        return _buildChip(fetched?.name ?? "Unknown", onTap);
+      },
+    );
+  }
+
+  Widget _buildChip(String name, VoidCallback? onTap) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Chip(
+        label: Text(
+          name,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+        ),
+        backgroundColor: Colors.blue.shade100,
+        avatar: const Icon(Icons.person, size: 18, color: Colors.blue),
       ),
     );
   }
