@@ -1,10 +1,13 @@
+import 'package:book_hunt/models/author.dart';
 import 'package:flutter/foundation.dart';
 import 'package:book_hunt/repositories/author_repository.dart';
 
 class AuthorProvider with ChangeNotifier {
   final AuthorRepository repository;
+  AuthorModel? _author;
   AuthorProvider(this.repository);
 
+  AuthorModel? get author => _author;
   bool isLoading = false;
   String? errorMessage;
   Map<String, dynamic>? authorDetail;

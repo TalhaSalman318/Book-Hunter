@@ -1,11 +1,13 @@
 import 'package:book_hunt/core/routing.dart';
 import 'package:book_hunt/core/theme.dart';
 import 'package:book_hunt/providers/auth_provider.dart';
+import 'package:book_hunt/providers/author_provider.dart';
 import 'package:book_hunt/providers/book_provider.dart';
 import 'package:book_hunt/providers/bottom_nav_provider.dart';
 import 'package:book_hunt/providers/cover_provider.dart';
 import 'package:book_hunt/providers/search_provider.dart';
 import 'package:book_hunt/providers/work_detail_provider.dart';
+import 'package:book_hunt/repositories/author_repository.dart';
 import 'package:book_hunt/repositories/book_repository.dart';
 import 'package:book_hunt/repositories/cover_repository.dart';
 import 'package:book_hunt/screens/auth/log_in_screen.dart';
@@ -37,6 +39,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(
+          create: (context) => AuthorProvider(AuthorRepository(api)),
+        ),
         ChangeNotifierProvider(create: (context) => BookProvider(repository)),
         ChangeNotifierProvider(create: (_) => SearchBooksProvider(repository)),
         ChangeNotifierProvider(create: (_) => WorkDetailProvider(repository)),

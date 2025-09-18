@@ -1,6 +1,8 @@
 import 'package:book_hunt/models/book_work.dart';
 import 'package:book_hunt/providers/book_provider.dart';
 import 'package:book_hunt/providers/cover_provider.dart';
+import 'package:book_hunt/screens/search/search_screen.dart';
+import 'package:book_hunt/screens/search/searched_item_screen.dart';
 import 'package:book_hunt/screens/work_detail/work_details_screen.dart';
 import 'package:book_hunt/widgets/book_card.dart';
 import 'package:book_hunt/widgets/color.dart';
@@ -28,17 +30,14 @@ class _HomeScreenState extends State<HomeScreen> {
         listen: false,
       ).fetchTrendingBooks(),
     );
-    Future.microtask(
-      () =>
-          Provider.of<BookProvider>(context, listen: false).fetchRecentBooks(),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final serachBookProvider = Provider.of<SearchBooksProvider>(context);
-    // final coverProvider = Provider.of<CoverProvider>(context);
+    final searchBookProvider = Provider.of<SearchBooksProvider>(context);
+    final coverProvider = Provider.of<CoverProvider>(context, listen: false);
     final bookProvider = Provider.of<BookProvider>(context);
+
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -46,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            // 🔍 Search Bar
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextField(
@@ -61,12 +61,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.search),
                     onPressed: () {
-                      serachBookProvider.search(searchController.text);
+                      final query = searchController.text;
+                      searchBookProvider.search(
+                        query,
+                      ); // ye provider update karega
+                      searchBookProvider.search(searchController.text);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => SearchedItemScreen()),
+                      );
                     },
                   ),
                 ),
               ),
             ),
+
+            // 📌 Trending Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
               child: Row(
@@ -99,6 +109,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
+
+            // 🔥 Trending Books List
             SizedBox(
               height: 250.h,
               child: ListView.builder(
@@ -106,16 +118,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: bookProvider.trendingBooks.length,
                 itemBuilder: (context, index) {
                   final book = bookProvider.trendingBooks[index];
-                  // // JSON ko model me convert karo
                   final bookModel = BookWorkModel.fromJson(book);
+
                   return BookCard(
-                    title: book['title'] ?? 'No title',
+                    coverUrl:
+                        (bookModel.covers != null &&
+                            bookModel.covers!.isNotEmpty)
+                        ? coverProvider.getCoverUrl(
+                            bookModel.covers!.first,
+                            size: 'M',
+                          )
+                        : "https://via.placeholder.com/150x200.png?text=No+Cover",
+
+                    title: bookModel.title ?? 'No title',
                     key: ValueKey(bookModel.key),
                     bookWorkModel: bookModel,
                   );
                 },
               ),
             ),
+
+            // 📌 Recently Added Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
               child: Row(
@@ -148,7 +171,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
+
             SizedBox(height: 20.h),
+
+            // 📚 Recently Added Books List
             SizedBox(
               height: 250.h,
               child: ListView.builder(
@@ -156,10 +182,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: bookProvider.trendingBooks.length,
                 itemBuilder: (context, index) {
                   final book = bookProvider.trendingBooks[index];
-                  // // JSON ko model me convert karo
                   final bookModel = BookWorkModel.fromJson(book);
+
                   return BookCard(
-                    title: book['title'] ?? 'No title',
+                    coverUrl:
+                        (bookModel.covers != null &&
+                            bookModel.covers!.isNotEmpty)
+                        ? coverProvider.getCoverUrl(
+                            bookModel.covers!.first,
+                            size: 'M',
+                          )
+                        : "https://via.placeholder.com/150x200.png?text=No+Cover",
+
+                    title: bookModel.title ?? 'No title',
                     key: ValueKey(bookModel.key),
                     bookWorkModel: bookModel,
                   );
