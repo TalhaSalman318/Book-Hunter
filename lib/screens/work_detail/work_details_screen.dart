@@ -71,12 +71,7 @@ class _WorkDetailScreenState extends State<WorkDetailScreen> {
                 final rawKey = a['author']?['key'] ?? "";
                 final authorId = rawKey.replaceAll("/authors/", "");
 
-                return AuthorChip(
-                  authorId: authorId,
-                  onTap: () {
-                    // Navigate to Author Detail screen if needed
-                  },
-                );
+                return AuthorChip(authorId: authorId);
               }).toList(),
             ),
           ],
@@ -85,39 +80,3 @@ class _WorkDetailScreenState extends State<WorkDetailScreen> {
     );
   }
 }
-
-/// ✅ Separate widget for fetching and showing author chip
-// class AuthorFetcherChip extends StatelessWidget {
-//   final String authorId;
-//   const AuthorFetcherChip({super.key, required this.authorId});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final provider = context.watch<AuthorProvider>();
-//     final author = provider.getAuthor(authorId);
-
-//     if (author != null) {
-//       return AuthorChip(
-//         name: author.name ?? "Unknown",
-//         onTap: () {
-//           // TODO: Navigate to author detail screen
-//         },
-//       );
-//     }
-
-//     return FutureBuilder(
-//       future: context.read<AuthorProvider>().fetchAuthor(authorId),
-//       builder: (context, snapshot) {
-//         if (snapshot.connectionState == ConnectionState.waiting) {
-//           return const Chip(label: Text("Loading..."));
-//         }
-//         if (snapshot.hasError) {
-//           return const Chip(label: Text("Error"));
-//         }
-
-//         final fetched = provider.getAuthor(authorId);
-//         return AuthorChip(name: fetched?.name ?? "Unknown", onTap: () {});
-//       },
-//     );
-//   }
-// }
