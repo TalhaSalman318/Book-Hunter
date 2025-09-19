@@ -6,6 +6,7 @@ import 'package:book_hunt/screens/search/searched_item_screen.dart';
 import 'package:book_hunt/screens/work_detail/work_details_screen.dart';
 import 'package:book_hunt/widgets/book_card.dart';
 import 'package:book_hunt/widgets/color.dart';
+import 'package:book_hunt/widgets/subject_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -75,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
+            SubjectChip(subject: "action"),
 
             // 📌 Trending Section
             Padding(
