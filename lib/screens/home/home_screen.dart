@@ -1,9 +1,7 @@
 import 'package:book_hunt/models/book_work.dart';
 import 'package:book_hunt/providers/book_provider.dart';
 import 'package:book_hunt/providers/cover_provider.dart';
-import 'package:book_hunt/screens/search/search_screen.dart';
 import 'package:book_hunt/screens/search/searched_item_screen.dart';
-import 'package:book_hunt/screens/work_detail/work_details_screen.dart';
 import 'package:book_hunt/widgets/book_card.dart';
 import 'package:book_hunt/widgets/color.dart';
 import 'package:book_hunt/widgets/subject_chip.dart';
@@ -30,6 +28,12 @@ class _HomeScreenState extends State<HomeScreen> {
         context,
         listen: false,
       ).fetchTrendingBooks(),
+    );
+    Future.microtask(
+      () => Provider.of<CoverProvider>(context, listen: false).getCoverUrl(
+        /* Provide a valid coverId here, e.g. 0 or a default value */
+        0,
+      ),
     );
   }
 
@@ -123,16 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   final bookModel = BookWorkModel.fromJson(book);
 
                   return BookCard(
-                    coverUrl:
-                        (bookModel.covers != null &&
-                            bookModel.covers!.isNotEmpty)
-                        ? coverProvider.getCoverUrl(
-                            bookModel.covers!.first,
-                            size: 'M',
-                          )
-                        : "https://via.placeholder.com/150x200.png?text=No+Cover",
-
-                    title: bookModel.title ?? 'No title',
+                    // title: bookModel.title ?? 'No title',
                     key: ValueKey(bookModel.key),
                     bookWorkModel: bookModel,
                   );
@@ -187,16 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   final bookModel = BookWorkModel.fromJson(book);
 
                   return BookCard(
-                    coverUrl:
-                        (bookModel.covers != null &&
-                            bookModel.covers!.isNotEmpty)
-                        ? coverProvider.getCoverUrl(
-                            bookModel.covers!.first,
-                            size: 'M',
-                          )
-                        : "https://via.placeholder.com/150x200.png?text=No+Cover",
-
-                    title: bookModel.title ?? 'No title',
+                    // title: bookModel.title ?? 'No title',
                     key: ValueKey(bookModel.key),
                     bookWorkModel: bookModel,
                   );

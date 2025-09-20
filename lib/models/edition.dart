@@ -3,7 +3,12 @@ class EditionModel {
   int? size;
   List<Entries>? entries;
 
-  EditionModel({this.links, this.size, this.entries});
+  EditionModel(
+    List<Map<String, dynamic>> response, {
+    this.links,
+    this.size,
+    this.entries,
+  });
 
   EditionModel.fromJson(Map<String, dynamic> json) {
     links = json["links"] == null ? null : Links.fromJson(json["links"]);

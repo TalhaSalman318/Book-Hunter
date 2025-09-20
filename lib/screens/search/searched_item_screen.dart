@@ -29,9 +29,8 @@ class SearchedItemScreen extends StatelessWidget {
                 final bookModel = BookWorkModel.fromJson(book);
 
                 return BookCard(
-                  title: book['title'],
+                  // title: book['title'],
                   bookWorkModel: bookModel,
-                  coverUrl: 'coverUrl',
                 );
               },
             ),

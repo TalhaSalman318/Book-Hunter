@@ -55,12 +55,9 @@ class _SubjectBooksScreenState extends State<SubjectBooksScreen> {
 
                   return BookCard(
                     // <-- RETURN keyword add kiya
-                    title: bookModel.title ?? 'No title',
+                    // title: bookModel.title ?? 'No title',
                     key: ValueKey(bookModel.key),
                     bookWorkModel: bookModel,
-                    coverUrl: bookModel.covers is String
-                        ? bookModel.covers as String
-                        : '', // yaha cover url bhi use karo
                   );
                 },
               ),

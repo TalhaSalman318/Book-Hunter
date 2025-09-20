@@ -6,6 +6,6 @@ class CoverRepository {
 
   /// Get cover image URL for a book/edition
   String getCoverUrl(int coverId, {String size = "M"}) {
-    return api.coverUrlFromCoverId(coverId, size: size);
+    return "https://covers.openlibrary.org/b/id/$coverId-$size.jpg";
   }
 }

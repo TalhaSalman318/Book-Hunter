@@ -1,3 +1,4 @@
+import 'package:book_hunt/screens/editions/edition_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:book_hunt/providers/work_detail_provider.dart';
@@ -73,6 +74,18 @@ class _WorkDetailScreenState extends State<WorkDetailScreen> {
 
                 return AuthorChip(authorId: authorId);
               }).toList(),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        EditionsScreen(workId: widget.workId), // work ka key
+                  ),
+                );
+              },
+              child: const Text("View Editions"),
             ),
           ],
         ),

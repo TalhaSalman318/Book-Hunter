@@ -5,6 +5,7 @@ import 'package:book_hunt/providers/author_provider.dart';
 import 'package:book_hunt/providers/book_provider.dart';
 import 'package:book_hunt/providers/bottom_nav_provider.dart';
 import 'package:book_hunt/providers/cover_provider.dart';
+import 'package:book_hunt/providers/editions_provider.dart';
 import 'package:book_hunt/providers/search_provider.dart';
 import 'package:book_hunt/providers/subject_provider.dart';
 import 'package:book_hunt/providers/work_detail_provider.dart';
@@ -41,6 +42,10 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(
+          create: (_) => EditionProvider(BookRepository(api)),
+        ),
+
         ChangeNotifierProvider(
           create: (context) => AuthorProvider(AuthorRepository(api)),
         ),

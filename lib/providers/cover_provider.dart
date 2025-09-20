@@ -5,7 +5,6 @@ class CoverProvider with ChangeNotifier {
   final CoverRepository repository;
   CoverProvider(this.repository);
 
-  /// Get cover URL
   String getCoverUrl(int coverId, {String size = "M"}) {
     return repository.getCoverUrl(coverId, size: size);
   }
