@@ -1,5 +1,8 @@
+import 'package:book_hunt/core/env.dart';
 import 'package:book_hunt/screens/editions/edition_screen.dart';
+import 'package:book_hunt/widgets/color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:book_hunt/providers/work_detail_provider.dart';
 import 'package:book_hunt/providers/author_provider.dart';
@@ -27,7 +30,7 @@ class _WorkDetailScreenState extends State<WorkDetailScreen> {
     final workDetailProvider = context.watch<WorkDetailProvider>();
 
     if (workDetailProvider.isLoading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return const Scaffold(body: Center(child: WorkDetailShimmer()));
     }
 
     if (workDetailProvider.errorMessage != null) {
@@ -45,51 +48,114 @@ class _WorkDetailScreenState extends State<WorkDetailScreen> {
       appBar: AppBar(title: const Text("Work Detail")),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Title
-            Text(
-              work['title'] ?? "No title",
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-
-            const SizedBox(height: 12),
-
-            // Description
-            Text(
-              work['description'] is Map
-                  ? (work['description']['value'] ?? "No description")
-                  : (work['description'] ?? "No description"),
-            ),
-
-            const SizedBox(height: 16),
-
-            // Author chips
-            Wrap(
-              spacing: 8,
-              children: (work['authors'] as List? ?? []).map((a) {
-                final rawKey = a['author']?['key'] ?? "";
-                final authorId = rawKey.replaceAll("/authors/", "");
-
-                return AuthorChip(authorId: authorId);
-              }).toList(),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) =>
-                        EditionsScreen(workId: widget.workId), // work ka key
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Container(
+                    height: 200.h,
+                    width: 90.w,
+                    color: Colors.amberAccent,
                   ),
-                );
-              },
-              child: const Text("View Editions"),
-            ),
-          ],
+                  Column(
+                    children: [
+                      // Title
+                      Text(
+                        work['title'] ?? "No title",
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Wrap(
+                        spacing: 8,
+                        children: (work['authors'] as List? ?? []).map((a) {
+                          final rawKey = a['author']?['key'] ?? "";
+                          final authorId = rawKey.replaceAll("/authors/", "");
+
+                          return AuthorChip(authorId: authorId);
+                        }).toList(),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => EditionsScreen(
+                                workId: widget.workId,
+                              ), // work ka key
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          "View Editions",
+                          style: TextStyle(color: AppColors.blackColor),
+                          selectionColor: AppColors.blackColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Text("About Book"),
+
+              // Description
+              Text(
+                work['description'] is Map
+                    ? (work['description']['value'] ?? "No description")
+                    : (work['description'] ?? "No description"),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
+
+// Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             // Title
+//             Text(
+//               work['title'] ?? "No title",
+//               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+//             ),
+
+//             const SizedBox(height: 12),
+
+//             // Description
+//             Text(
+//               work['description'] is Map
+//                   ? (work['description']['value'] ?? "No description")
+//                   : (work['description'] ?? "No description"),
+//             ),
+
+//             const SizedBox(height: 16),
+
+//             // Author chips
+//             Wrap(
+//               spacing: 8,
+//               children: (work['authors'] as List? ?? []).map((a) {
+//                 final rawKey = a['author']?['key'] ?? "";
+//                 final authorId = rawKey.replaceAll("/authors/", "");
+
+//                 return AuthorChip(authorId: authorId);
+//               }).toList(),
+//             ),
+//             ElevatedButton(
+//               onPressed: () {
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(
+//                     builder: (_) =>
+//                         EditionsScreen(workId: widget.workId), // work ka key
+//                   ),
+//                 );
+//               },
+//               child: const Text("View Editions"),
+//             ),
+//           ],
+//         ),

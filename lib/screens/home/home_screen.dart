@@ -40,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final searchBookProvider = Provider.of<SearchBooksProvider>(context);
-    final coverProvider = Provider.of<CoverProvider>(context, listen: false);
     final bookProvider = Provider.of<BookProvider>(context);
 
     final width = MediaQuery.of(context).size.width;
@@ -80,8 +79,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            SubjectChip(subject: "action"),
-
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SubjectChip(subject: "action"),
+                  SubjectChip(subject: "history"),
+                  SubjectChip(subject: "biography"),
+                  SubjectChip(subject: "places"),
+                  SubjectChip(subject: "fiction"),
+                  SubjectChip(subject: "animals"),
+                ],
+              ),
+            ),
             // 📌 Trending Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
