@@ -81,16 +81,19 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SubjectChip(subject: "action"),
-                  SubjectChip(subject: "history"),
-                  SubjectChip(subject: "biography"),
-                  SubjectChip(subject: "places"),
-                  SubjectChip(subject: "fiction"),
-                  SubjectChip(subject: "animals"),
-                ],
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SubjectChip(subject: "action"),
+                    SubjectChip(subject: "history"),
+                    SubjectChip(subject: "biography"),
+                    SubjectChip(subject: "places"),
+                    SubjectChip(subject: "fiction"),
+                    SubjectChip(subject: "animals"),
+                  ],
+                ),
               ),
             ),
             // 📌 Trending Section

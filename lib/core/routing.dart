@@ -1,3 +1,4 @@
+import 'package:book_hunt/screens/auth/sign_in_screen.dart';
 import 'package:book_hunt/screens/home/home_screen.dart';
 import 'package:book_hunt/screens/work_detail/work_details_screen.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +21,8 @@ class AppRoutes {
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case AppRoutes.main:
-        return MaterialPageRoute(builder: (_) => const MainScreen());
+      case AppRoutes.signIn:
+        return MaterialPageRoute(builder: (_) => const SignInScreen());
 
       // case AppRoutes.search:
       //   final query = settings.arguments as String?;

@@ -1,6 +1,7 @@
 import 'package:book_hunt/core/env.dart';
 import 'package:book_hunt/screens/editions/edition_screen.dart';
 import 'package:book_hunt/widgets/color.dart';
+import 'package:book_hunt/widgets/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -68,6 +69,18 @@ class _WorkDetailScreenState extends State<WorkDetailScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      FavoriteButton(
+                        bookId:
+                            widget.workId ??
+                            DateTime.now().millisecondsSinceEpoch.toString(),
+                        title: work['title'] ?? "No title", // 🔹 title string
+                        coverId:
+                            (work['covers'] != null &&
+                                work['covers'].isNotEmpty)
+                            ? work['covers'][0]
+                            : 0, // 🔹 agar cover hai to use karo, warna 0
+                      ),
+
                       Wrap(
                         spacing: 8,
                         children: (work['authors'] as List? ?? []).map((a) {

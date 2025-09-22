@@ -1,6 +1,7 @@
 import 'package:book_hunt/providers/auth_provider.dart';
 import 'package:book_hunt/screens/auth/sign_in_screen.dart';
 import 'package:book_hunt/screens/home/home_screen.dart';
+import 'package:book_hunt/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   // ✅ Success ke baad HomeScreen pr le jao
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const HomeScreen()),
+                    MaterialPageRoute(builder: (context) => const MainScreen()),
                   );
                 } catch (_) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -68,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   // ✅ Success ke baad HomeScreen pr le jao
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const HomeScreen()),
+                    MaterialPageRoute(builder: (context) => const MainScreen()),
                   );
                 } catch (_) {
                   ScaffoldMessenger.of(context).showSnackBar(

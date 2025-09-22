@@ -6,6 +6,7 @@ import 'package:book_hunt/providers/book_provider.dart';
 import 'package:book_hunt/providers/bottom_nav_provider.dart';
 import 'package:book_hunt/providers/cover_provider.dart';
 import 'package:book_hunt/providers/editions_provider.dart';
+import 'package:book_hunt/providers/favourites_provider.dart';
 import 'package:book_hunt/providers/search_provider.dart';
 import 'package:book_hunt/providers/subject_provider.dart';
 import 'package:book_hunt/providers/work_detail_provider.dart';
@@ -15,6 +16,7 @@ import 'package:book_hunt/repositories/cover_repository.dart';
 import 'package:book_hunt/repositories/subject_repository.dart';
 import 'package:book_hunt/screens/auth/log_in_screen.dart';
 import 'package:book_hunt/screens/main/main_screen.dart';
+import 'package:book_hunt/services/favorite_service.dart';
 import 'package:book_hunt/services/network_client.dart';
 import 'package:book_hunt/services/open_library_api.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +61,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => CoverProvider(CoverRepository(api)),
         ),
+        ChangeNotifierProvider(create: (_) => FavoriteProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 812),
@@ -68,7 +71,7 @@ class MyApp extends StatelessWidget {
             title: 'Flutter Demo',
 
             // 📌 Default route (jo sabse pehle open hogi)
-            initialRoute: AppRoutes.main,
+            initialRoute: AppRoutes.signIn,
 
             // 📌 Hamara route generator
             onGenerateRoute: AppRouter.generateRoute,
