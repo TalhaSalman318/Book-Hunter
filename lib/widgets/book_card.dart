@@ -1,48 +1,36 @@
 import 'package:book_hunt/core/theme.dart';
 import 'package:book_hunt/models/book_work.dart';
-import 'package:book_hunt/providers/author_provider.dart';
-import 'package:book_hunt/providers/cover_provider.dart';
 import 'package:book_hunt/screens/work_detail/work_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 
-class BookCard extends StatefulWidget {
+class BookCard extends StatelessWidget {
   final BookWorkModel? bookWorkModel;
 
   const BookCard({super.key, this.bookWorkModel});
 
-  // ✅ Author preload here
-
-  @override
-  State<BookCard> createState() => _BookCardState();
-}
-
-class _BookCardState extends State<BookCard> {
   @override
   Widget build(BuildContext context) {
-    final coverId =
-        (widget.bookWorkModel?.covers != null &&
-            widget.bookWorkModel!.covers!.isNotEmpty)
-        ? widget.bookWorkModel!.covers!.first
-        : null;
-
-    final coverUrl = (coverId != null)
-        ? context.read<CoverProvider>().getCoverUrl(coverId)
-        : "https://via.placeholder.com/150x200.png?text=No+Cover";
-
-    if (widget.bookWorkModel == null) {
-      return const SizedBox.shrink(); // ✅ agar null aaya to empty widget
+    if (bookWorkModel == null) {
+      return const SizedBox.shrink(); // ✅ null handle
     }
 
-    // final coverProvider = Provider.of<CoverProvider>(context, listen: false);
+    final workId = (bookWorkModel!.key ?? '').replaceAll("/works/", '');
+    final title = bookWorkModel!.title ?? "No title";
+
+    // ✅ Cover Id pick from list
+    final coverId =
+        (bookWorkModel!.covers != null && bookWorkModel!.covers!.isNotEmpty)
+        ? bookWorkModel!.covers!.first
+        : 0;
+
+    // ✅ OpenLibrary cover URL
+    final coverUrl = coverId != 0
+        ? "https://covers.openlibrary.org/b/id/${coverId.toString()}-M.jpg"
+        : null;
 
     return GestureDetector(
       onTap: () {
-        final workId = (widget.bookWorkModel!.key ?? '').replaceAll(
-          "/works/",
-          '',
-        );
         if (workId.isNotEmpty) {
           Navigator.push(
             context,
@@ -51,11 +39,11 @@ class _BookCardState extends State<BookCard> {
         }
       },
       child: SizedBox(
-        width: 140.w, // ✅ fixed width
+        width: 140.w,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // 🖼️ Image
+            // 🖼️ Cover Image
             Container(
               height: 180.h,
               width: double.infinity,
@@ -65,14 +53,23 @@ class _BookCardState extends State<BookCard> {
                   top: Radius.circular(12),
                 ),
               ),
-              child: Image.network(coverUrl, fit: BoxFit.cover),
+              child: coverUrl != null
+                  ? Image.network(
+                      coverUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        debugPrint("Cover not found: $coverUrl");
+                        return const Icon(Icons.book, size: 60);
+                      },
+                    )
+                  : const Icon(Icons.book, size: 60),
             ),
 
             const SizedBox(height: 8),
 
             // 📖 Title
             Text(
-              widget.bookWorkModel!.title ?? 'No title',
+              title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,

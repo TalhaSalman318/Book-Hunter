@@ -43,6 +43,12 @@ class BookProvider with ChangeNotifier {
     _setLoading(true);
     try {
       trendingBooks = await repository.getTrendingBooks();
+
+      // 🔎 Debug print to check covers
+      for (var book in trendingBooks) {
+        debugPrint("Title: ${book['title']}, Covers: ${book['covers']}");
+      }
+
       errorMessage = null;
     } catch (e) {
       errorMessage = e.toString();

@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
             title: 'Flutter Demo',
 
             // 📌 Default route (jo sabse pehle open hogi)
-            initialRoute: AppRoutes.signIn,
+            initialRoute: AppRoutes.main,
 
             // 📌 Hamara route generator
             onGenerateRoute: AppRouter.generateRoute,

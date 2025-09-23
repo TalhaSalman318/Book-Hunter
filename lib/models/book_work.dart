@@ -43,7 +43,9 @@ class BookWorkModel {
           .toList(),
       type: json["type"] != null ? Type1.fromJson(json["type"]) : null,
       description: _parseDescription(json["description"]),
-      covers: (json["covers"] as List?)?.map((e) => e as int).toList(),
+      covers: json["covers"] != null
+          ? (json["covers"] as List).map((e) => e as int).toList()
+          : (json["cover_i"] != null ? [json["cover_i"] as int] : []),
       subjectPlaces: (json["subject_places"] as List?)
           ?.map((e) => e as String)
           .toList(),
