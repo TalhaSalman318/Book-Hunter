@@ -92,12 +92,11 @@ class _WorkDetailScreenState extends State<WorkDetailScreen> {
                       ),
                       ElevatedButton(
                         onPressed: () {
+                          final workId = work['key'].replaceAll("/works/", "");
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => EditionsScreen(
-                                workId: widget.workId,
-                              ), // work ka key
+                              builder: (_) => EditionsScreen(workId: workId),
                             ),
                           );
                         },

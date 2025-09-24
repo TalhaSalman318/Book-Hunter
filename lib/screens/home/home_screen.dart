@@ -84,6 +84,10 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(title: const Text('Book Hunt')),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Divider(height: 1.h, color: AppColors.navBarGray),
+          ),
           // 🔍 Search Bar + Suggestions
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -94,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   focusNode: _focusNode,
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: AppColors.searchGrey,
+                    // fillColor: AppColors.searchGrey,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide.none,
@@ -116,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     margin: const EdgeInsets.only(top: 5),
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      // color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
@@ -184,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: TextStyle(
                             fontSize: width * 0.04,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.blackColor,
+                            // color: AppColors.blackColor,
                           ),
                         ),
                         Row(
@@ -238,7 +242,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: TextStyle(
                             fontSize: width * 0.04,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.blackColor,
+                            // color: AppColors.blackColor,
                           ),
                         ),
                         Row(

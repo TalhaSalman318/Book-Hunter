@@ -9,6 +9,7 @@ import 'package:book_hunt/providers/editions_provider.dart';
 import 'package:book_hunt/providers/favourites_provider.dart';
 import 'package:book_hunt/providers/search_provider.dart';
 import 'package:book_hunt/providers/subject_provider.dart';
+import 'package:book_hunt/providers/theme_provider.dart';
 import 'package:book_hunt/providers/work_detail_provider.dart';
 import 'package:book_hunt/repositories/author_repository.dart';
 import 'package:book_hunt/repositories/book_repository.dart';
@@ -62,21 +63,29 @@ class MyApp extends StatelessWidget {
           create: (_) => CoverProvider(CoverRepository(api)),
         ),
         ChangeNotifierProvider(create: (_) => FavoriteProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeChangerProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 812),
         builder: (context, child) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Flutter Demo',
+          return Consumer<ThemeChangerProvider>(
+            builder: (context, themeProvider, child) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Flutter Demo',
+                themeMode: themeProvider.themeMode,
+                theme: ThemeData.light(),
 
-            // 📌 Default route (jo sabse pehle open hogi)
-            initialRoute: AppRoutes.main,
+                darkTheme: ThemeData.dark(),
 
-            // 📌 Hamara route generator
-            onGenerateRoute: AppRouter.generateRoute,
-            theme: appTheme,
-            // home: MainScreen(),
+                // 📌 Default route (jo sabse pehle open hogi)
+                initialRoute: AppRoutes.main,
+
+                // 📌 Hamara route generator
+                onGenerateRoute: AppRouter.generateRoute,
+                // home: MainScreen(),
+              );
+            },
           );
         },
       ),

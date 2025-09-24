@@ -1,10 +1,11 @@
 import 'package:book_hunt/providers/editions_provider.dart';
-import 'package:book_hunt/widgets/book_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:book_hunt/models/edition.dart';
 
 class EditionsScreen extends StatefulWidget {
   final String workId;
+
   const EditionsScreen({super.key, required this.workId});
 
   @override
@@ -29,24 +30,39 @@ class _EditionsScreenState extends State<EditionsScreen> {
       body: editionProvider.isLoading
           ? const Center(child: CircularProgressIndicator())
           : editionProvider.errorMessage != null
-          ? Center(child: Text(editionProvider.errorMessage!))
+          ? Center(
+              child: Text(
+                "Error: ${editionProvider.errorMessage}",
+                style: const TextStyle(color: Colors.red),
+              ),
+            )
+          : editionProvider.editions.isEmpty
+          ? const Center(child: Text("No editions found"))
           : ListView.builder(
+              padding: const EdgeInsets.all(10),
               itemCount: editionProvider.editions.length,
               itemBuilder: (context, index) {
                 final edition = editionProvider.editions[index];
 
-                final title = edition.title ?? "Untitled";
-                final coverUrl =
-                    (edition.covers != null && edition.covers!.isNotEmpty)
-                    ? "https://covers.openlibrary.org/b/id/${edition.covers![0]}-M.jpg"
-                    : "";
-
-                return BookCard(
-                  bookWorkModel: null!,
-                  // title: title,
-                  // coverUrl: coverUrl
+                return Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  margin: const EdgeInsets.symmetric(vertical: 6),
+                  child: ListTile(
+                    title: Text(
+                      edition.title ?? "No Title",
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      "Publish Date: ${edition.publishDate ?? "Unknown"}",
+                    ),
+                    trailing: const Icon(Icons.arrow_forward_ios),
+                    onTap: () {
+                      // yahan baad mein edition detail screen khol sakte ho
+                    },
+                  ),
                 );
-                ;
               },
             ),
     );
