@@ -1,8 +1,12 @@
+import 'package:book_hunt/core/theme.dart';
 import 'package:book_hunt/providers/auth_provider.dart';
 import 'package:book_hunt/screens/auth/log_in_screen.dart';
 import 'package:book_hunt/screens/home/home_screen.dart';
 import 'package:book_hunt/screens/main/main_screen.dart';
+import 'package:book_hunt/widgets/reuseable_button.dart';
+import 'package:book_hunt/widgets/reuseable_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -21,45 +25,56 @@ class _SignInScreenState extends State<SignInScreen> {
     final auth = Provider.of<AuthProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Sign In")),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+      body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton.icon(
-              icon: const Icon(Icons.login),
-              label: const Text("Continue with Google"),
-              onPressed: () async {
-                try {
-                  await auth.signInWithGoogle();
-
-                  // ✅ Success ke baad HomeScreen pr le jao
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const MainScreen()),
-                  );
-                } catch (_) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Google Sign-In failed")),
-                  );
-                }
-              },
+            Text(
+              "Welcome to Book Hunt",
+              style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 20),
-            TextField(
+            Text(
+              "Create Account",
+              style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              "Fill Your Information Below Or Register With Your Social Account",
+              style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
+                color: AppColors.fontGreyColor,
+              ),
+            ),
+            ReuseableTextfield(
               controller: _emailController,
-              decoration: const InputDecoration(labelText: "Email"),
+              labelText: 'Email',
             ),
-            TextField(
+            SizedBox(height: 10.h),
+            ReuseableTextfield(
               controller: _passwordController,
-              decoration: const InputDecoration(labelText: "Password"),
-              obscureText: true,
+              labelText: 'Password',
             ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              child: const Text("Continue with Email"),
-              onPressed: () async {
+            // ElevatedButton.icon(
+            //   icon: const Icon(Icons.login),
+            //   label: const Text("Continue with Google"),
+            //   onPressed: () async {
+            //     try {
+            //       await auth.signInWithGoogle();
+
+            //       // ✅ Success ke baad HomeScreen pr le jao
+            //       Navigator.pushReplacement(
+            //         context,
+            //         MaterialPageRoute(builder: (context) => const MainScreen()),
+            //       );
+            //     } catch (_) {
+            //       ScaffoldMessenger.of(context).showSnackBar(
+            //         const SnackBar(content: Text("Google Sign-In failed")),
+            //       );
+            //     }
+            //   },
+            // ),
+            SizedBox(height: 20),
+            ReuseableButton(
+              onTap: () async {
                 try {
                   await auth.signUpWithEmail(
                     _emailController.text.trim(),
@@ -77,25 +92,60 @@ class _SignInScreenState extends State<SignInScreen> {
                   );
                 }
               },
+              text: 'Sign In',
             ),
-            InkWell(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginScreen()),
-              ),
-              child: Text("Already have an account? login"),
-            ),
-            const SizedBox(height: 30),
-            if (auth.isSignedIn)
-              Column(
-                children: [
-                  Text("Welcome, ${auth.user?.email ?? ''}"),
-                  ElevatedButton(
-                    onPressed: () => auth.signOut(),
-                    child: const Text("Sign Out"),
+
+            // ElevatedButton(
+            //   child: const Text("Continue with Email"),
+            //   onPressed: () async {
+            //     try {
+            //       await auth.signUpWithEmail(
+            //         _emailController.text.trim(),
+            //         _passwordController.text.trim(),
+            //       );
+
+            //       // ✅ Success ke baad HomeScreen pr le jao
+            //       Navigator.pushReplacement(
+            //         context,
+            //         MaterialPageRoute(builder: (context) => const MainScreen()),
+            //       );
+            //     } catch (_) {
+            //       ScaffoldMessenger.of(context).showSnackBar(
+            //         const SnackBar(content: Text("Email Sign-In failed")),
+            //       );
+            //     }
+            //   },
+            // ),
+            Row(
+              children: [
+                Center(child: Text("Already have an account? ")),
+                InkWell(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginScreen(),
+                    ),
                   ),
-                ],
-              ),
+                  child: Text(
+                    "Log-In",
+                    style: TextStyle(color: AppColors.mainColor),
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 30),
+
+            // if (auth.isSignedIn)
+            //   Column(
+            //     children: [
+            //       Text("Welcome, ${auth.user?.email ?? ''}"),
+            //       ElevatedButton(
+            //         onPressed: () => auth.signOut(),
+            //         child: const Text("Sign Out"),
+            //       ),
+            //     ],
+            //   ),
           ],
         ),
       ),

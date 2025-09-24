@@ -21,8 +21,8 @@ class AppRoutes {
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case AppRoutes.main:
-        return MaterialPageRoute(builder: (_) => const MainScreen());
+      case AppRoutes.signIn:
+        return MaterialPageRoute(builder: (_) => const SignInScreen());
 
       // case AppRoutes.search:
       //   final query = settings.arguments as String?;

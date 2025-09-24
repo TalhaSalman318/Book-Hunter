@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppColors {
   static const Color mainColor = Color(0xFFB1732E);
@@ -12,24 +13,24 @@ class AppColors {
 }
 
 class AppTextStyles {
-  static const TextStyle heading1 = TextStyle(
-    fontSize: 22,
+  static TextStyle heading1 = TextStyle(
+    fontSize: 22.sp,
     fontWeight: FontWeight.bold,
     color: AppColors.blackColor,
   );
 
-  static const TextStyle heading2 = TextStyle(
-    fontSize: 18,
+  static TextStyle heading2 = TextStyle(
+    fontSize: 18.sp,
     fontWeight: FontWeight.w600,
     color: AppColors.blackColor,
   );
 
-  static const TextStyle bodyText = TextStyle(
+  static TextStyle bodyText = TextStyle(
     fontSize: 14,
     color: AppColors.blackColor,
   );
 
-  static const TextStyle caption = TextStyle(
+  static TextStyle caption = TextStyle(
     fontSize: 12,
     color: AppColors.fontGreyColor,
   );
@@ -43,7 +44,7 @@ ThemeData appTheme = ThemeData(
     foregroundColor: Colors.white,
     elevation: 0,
   ),
-  textTheme: const TextTheme(
+  textTheme: TextTheme(
     titleLarge: AppTextStyles.heading1,
     bodyMedium: AppTextStyles.bodyText,
     bodySmall: AppTextStyles.caption,
