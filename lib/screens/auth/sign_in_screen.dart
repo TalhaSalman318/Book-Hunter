@@ -118,7 +118,59 @@ class _SignInScreenState extends State<SignInScreen> {
             // ),
             Row(
               children: [
-                Center(child: Text("Already have an account? ")),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Divider(
+                      thickness: 2,
+                      height: 12.h,
+                      color: AppColors.navBarGray,
+                    ),
+                  ),
+                ),
+                Text(
+                  "Or Sign-Up With",
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Divider(
+                      thickness: 2,
+                      height: 12,
+                      color: AppColors.navBarGray,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            ElevatedButton(
+              child: const Text("Continue with Email"),
+              onPressed: () async {
+                try {
+                  await auth.signUpWithEmail(
+                    _emailController.text.trim(),
+                    _passwordController.text.trim(),
+                  );
+
+                  // ✅ Success ke baad HomeScreen pr le jao
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MainScreen()),
+                  );
+                } catch (_) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Email Sign-In failed")),
+                  );
+                }
+              },
+            ),
+            Row(
+              children: [
+                Text("Already have an account? "),
                 InkWell(
                   onTap: () => Navigator.push(
                     context,
@@ -133,8 +185,6 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ],
             ),
-
-            const SizedBox(height: 30),
 
             // if (auth.isSignedIn)
             //   Column(
