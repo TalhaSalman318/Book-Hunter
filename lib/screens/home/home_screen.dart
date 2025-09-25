@@ -1,3 +1,4 @@
+import 'package:book_hunt/core/env.dart';
 import 'package:book_hunt/models/book_work.dart';
 import 'package:book_hunt/providers/book_provider.dart';
 import 'package:book_hunt/providers/cover_provider.dart';
@@ -219,21 +220,35 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   SizedBox(
                     height: 250.h,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: bookProvider.trendingBooks.length,
-                      itemBuilder: (context, index) {
-                        final bookJson = bookProvider.trendingBooks[index];
-                        final bookModel = BookWorkModel.fromJson(bookJson);
+                    child:
+                        bookProvider.isLoading ||
+                            bookProvider.trendingBooks.isEmpty
+                        ? ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 5, // jitne shimmer cards dikhane hain
+                            itemBuilder: (context, index) =>
+                                const BookCardShimmer(),
+                            separatorBuilder: (context, index) =>
+                                SizedBox(width: 10.w),
+                          )
+                        : ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: bookProvider.trendingBooks.length,
+                            itemBuilder: (context, index) {
+                              final bookJson =
+                                  bookProvider.trendingBooks[index];
+                              final bookModel = BookWorkModel.fromJson(
+                                bookJson,
+                              );
 
-                        return BookCard(
-                          key: ValueKey(bookModel.key),
-                          bookWorkModel: bookModel,
-                        );
-                      },
-                      separatorBuilder: (context, index) =>
-                          SizedBox(width: 10.w), // 👈 gap between books
-                    ),
+                              return BookCard(
+                                key: ValueKey(bookModel.key),
+                                bookWorkModel: bookModel,
+                              );
+                            },
+                            separatorBuilder: (context, index) =>
+                                SizedBox(width: 10.w),
+                          ),
                   ),
 
                   // 📌 Recently Added Section
@@ -274,21 +289,35 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   SizedBox(
                     height: 250.h,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: bookProvider.trendingBooks.length,
-                      itemBuilder: (context, index) {
-                        final bookJson = bookProvider.trendingBooks[index];
-                        final bookModel = BookWorkModel.fromJson(bookJson);
+                    child:
+                        bookProvider.isLoading ||
+                            bookProvider.trendingBooks.isEmpty
+                        ? ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 5, // jitne shimmer cards dikhane hain
+                            itemBuilder: (context, index) =>
+                                const BookCardShimmer(),
+                            separatorBuilder: (context, index) =>
+                                SizedBox(width: 10.w),
+                          )
+                        : ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: bookProvider.trendingBooks.length,
+                            itemBuilder: (context, index) {
+                              final bookJson =
+                                  bookProvider.trendingBooks[index];
+                              final bookModel = BookWorkModel.fromJson(
+                                bookJson,
+                              );
 
-                        return BookCard(
-                          key: ValueKey(bookModel.key),
-                          bookWorkModel: bookModel,
-                        );
-                      },
-                      separatorBuilder: (context, index) =>
-                          SizedBox(width: 10.w), // 👈 gap between books
-                    ),
+                              return BookCard(
+                                key: ValueKey(bookModel.key),
+                                bookWorkModel: bookModel,
+                              );
+                            },
+                            separatorBuilder: (context, index) =>
+                                SizedBox(width: 10.w),
+                          ),
                   ),
                 ],
               ),

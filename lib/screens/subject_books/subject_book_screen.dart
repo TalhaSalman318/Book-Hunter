@@ -1,3 +1,4 @@
+import 'package:book_hunt/core/env.dart';
 import 'package:book_hunt/models/book_work.dart';
 import 'package:book_hunt/providers/book_provider.dart';
 import 'package:flutter/material.dart';
@@ -34,18 +35,23 @@ class _SubjectBooksScreenState extends State<SubjectBooksScreen> {
     final books = subjectProvider.subjectBooks; // List<BookWork> assumed
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.subject.toUpperCase())),
+      appBar: AppBar(
+        title: Text(
+          widget.subject.toUpperCase(),
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: subjectProvider.isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(child: SearchShimmer())
             : books.isEmpty
             ? const Center(child: Text("No books found for this subject"))
             : GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, // 2 columns
                   crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
+                  mainAxisSpacing: 0,
                   childAspectRatio: 0.6, // Adjust as per BookCard size
                 ),
                 itemCount: books.length,

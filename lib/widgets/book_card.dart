@@ -48,7 +48,7 @@ class BookCard extends StatelessWidget {
               height: 180.h,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: AppColors.secondaryColor,
+                color: AppColors.navBarGray.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: coverUrl != null

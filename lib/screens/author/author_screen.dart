@@ -1,3 +1,4 @@
+import 'package:book_hunt/core/env.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:book_hunt/providers/author_provider.dart';
@@ -32,21 +33,41 @@ class _AuthorScreenState extends State<AuthorScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: provider.isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(child: WorkDetailShimmer())
             : author == null
             ? const Center(child: Text("Author not found"))
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 📌 Name
-                  Text(
-                    author.name ?? "Unknown",
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    children: [
+                      // 📌 Author photo
+                      if (author.photos != null && author.photos!.isNotEmpty)
+                        CircleAvatar(
+                          radius: 80,
+                          backgroundImage: NetworkImage(
+                            "https://covers.openlibrary.org/b/id/${author.photos![0]}-M.jpg",
+                          ),
+                        )
+                      else
+                        Container(
+                          height: 150,
+                          width: 100,
+                          color: Colors.grey[300],
+                          child: const Icon(Icons.person, size: 50),
+                        ),
+                      const SizedBox(width: 16),
+                      Text(
+                        author.name ?? "Unknown",
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
 
+                  // 📌 Name
                   const SizedBox(height: 12),
 
                   // 📌 Birth date
