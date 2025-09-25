@@ -26,6 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
             width: double.infinity.w,
@@ -35,33 +36,46 @@ class _LoginScreenState extends State<LoginScreen> {
               fit: BoxFit.cover,
             ),
           ), // Add your image here
+          SizedBox(height: 15.h),
+
+          Text(
+            "   Email",
+            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
+          ),
+
           ReuseableTextfield(controller: _emailController, labelText: 'Email'),
-          SizedBox(height: 10.h),
+          SizedBox(height: 20.h),
+          Text(
+            "   Password",
+            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
+          ),
           ReuseableTextfield(
             controller: _passwordController,
             labelText: 'Password',
           ),
           SizedBox(height: 20),
-          ReuseableButton(
-            onTap: () async {
-              try {
-                await auth.logInWithEmail(
-                  _emailController.text.trim(),
-                  _passwordController.text.trim(),
-                );
+          Center(
+            child: ReuseableButton(
+              onTap: () async {
+                try {
+                  await auth.logInWithEmail(
+                    _emailController.text.trim(),
+                    _passwordController.text.trim(),
+                  );
 
-                // ✅ Success ke baad HomeScreen pr le jao
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MainScreen()),
-                );
-              } catch (_) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Email Sign-In failed")),
-                );
-              }
-            },
-            text: 'Login',
+                  // ✅ Success ke baad HomeScreen pr le jao
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MainScreen()),
+                  );
+                } catch (_) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Email Sign-In failed")),
+                  );
+                }
+              },
+              text: 'Login',
+            ),
           ),
 
           const SizedBox(height: 20),
@@ -93,37 +107,40 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ],
           ),
-          ElevatedButton.icon(
-            icon: Image.asset(
-              'assets/google_logo.png',
-              height: 20.h,
-              width: 20.w,
-            ),
-            label: const Text("Continue with Google"),
-            onPressed: () async {
-              try {
-                await auth.signInWithGoogle();
+          Center(
+            child: ElevatedButton.icon(
+              icon: Image.asset(
+                'assets/google_logo.png',
+                height: 20.h,
+                width: 20.w,
+              ),
+              label: const Text("Continue with Google"),
+              onPressed: () async {
+                try {
+                  await auth.signInWithGoogle();
 
-                // ✅ Success ke baad HomeScreen pr le jao
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MainScreen()),
-                );
-              } catch (_) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Google Sign-In failed")),
-                );
-              }
-            },
+                  // ✅ Success ke baad HomeScreen pr le jao
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MainScreen()),
+                  );
+                } catch (_) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Google Sign-In failed")),
+                  );
+                }
+              },
+            ),
           ),
           const SizedBox(height: 20),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text("Don't have an account? "),
               InkWell(
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  MaterialPageRoute(builder: (context) => const SignInScreen()),
                 ),
                 child: Text(
                   "Sign-Up",

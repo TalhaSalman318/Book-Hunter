@@ -49,18 +49,19 @@ class BookCard extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 color: AppColors.secondaryColor,
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(12),
-                ),
+                borderRadius: BorderRadius.circular(10.r),
               ),
               child: coverUrl != null
-                  ? Image.network(
-                      coverUrl,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        debugPrint("Cover not found: $coverUrl");
-                        return const Icon(Icons.book, size: 60);
-                      },
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(10.r),
+                      child: Image.network(
+                        coverUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          debugPrint("Cover not found: $coverUrl");
+                          return const Icon(Icons.book, size: 60);
+                        },
+                      ),
                     )
                   : const Icon(Icons.book, size: 60),
             ),
@@ -73,7 +74,7 @@ class BookCard extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ],
         ),

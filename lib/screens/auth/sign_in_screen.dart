@@ -28,6 +28,7 @@ class _SignInScreenState extends State<SignInScreen> {
       body: SafeArea(
         child: Column(
           children: [
+            SizedBox(height: 30.h),
             Text(
               "Welcome to Book Hunt",
               style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
@@ -36,19 +37,46 @@ class _SignInScreenState extends State<SignInScreen> {
               "Create Account",
               style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
             ),
-            Text(
-              "Fill Your Information Below Or Register With Your Social Account",
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.bold,
-                color: AppColors.fontGreyColor,
+            SizedBox(height: 10.h),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Text(
+                textAlign: TextAlign.center,
+                "Fill Your Information Below Or Register With Your Social Account",
+                style: TextStyle(
+                  fontSize: 20.sp,
+
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.fontGreyColor,
+                ),
+              ),
+            ),
+            SizedBox(height: 30.h),
+
+            Align(
+              alignment: Alignment.centerLeft,
+
+              child: Text(
+                textAlign: TextAlign.start,
+
+                "   Email",
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
               ),
             ),
             ReuseableTextfield(
               controller: _emailController,
               labelText: 'Email',
             ),
-            SizedBox(height: 10.h),
+            SizedBox(height: 20.h),
+
+            Align(
+              alignment: Alignment.centerLeft,
+
+              child: Text(
+                "   Password",
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
+              ),
+            ),
             ReuseableTextfield(
               controller: _passwordController,
               labelText: 'Password',
@@ -72,7 +100,7 @@ class _SignInScreenState extends State<SignInScreen> {
             //     }
             //   },
             // ),
-            SizedBox(height: 20),
+            SizedBox(height: 40),
             ReuseableButton(
               onTap: () async {
                 try {
@@ -116,6 +144,8 @@ class _SignInScreenState extends State<SignInScreen> {
             //     }
             //   },
             // ),
+            SizedBox(height: 20.h),
+
             Row(
               children: [
                 Expanded(
@@ -147,14 +177,18 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ],
             ),
-            ElevatedButton(
-              child: const Text("Continue with Email"),
+            SizedBox(height: 20.h),
+
+            ElevatedButton.icon(
+              icon: Image.asset(
+                'assets/google_logo.png',
+                height: 20.h,
+                width: 20.w,
+              ),
+              label: const Text("Continue with Google"),
               onPressed: () async {
                 try {
-                  await auth.signUpWithEmail(
-                    _emailController.text.trim(),
-                    _passwordController.text.trim(),
-                  );
+                  await auth.signInWithGoogle();
 
                   // ✅ Success ke baad HomeScreen pr le jao
                   Navigator.pushReplacement(
@@ -163,12 +197,15 @@ class _SignInScreenState extends State<SignInScreen> {
                   );
                 } catch (_) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Email Sign-In failed")),
+                    const SnackBar(content: Text("Google Sign-In failed")),
                   );
                 }
               },
             ),
+            SizedBox(height: 10.h),
+
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text("Already have an account? "),
                 InkWell(

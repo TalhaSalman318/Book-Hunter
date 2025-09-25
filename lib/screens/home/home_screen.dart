@@ -81,7 +81,13 @@ class _HomeScreenState extends State<HomeScreen> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Book Hunt')),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text(
+          'Book Hunt',
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+        ),
+      ),
       body: Column(
         children: [
           Padding(
@@ -178,15 +184,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
-                      vertical: 20,
+                      vertical: 5,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Trending",
+                          "Most Popular",
                           style: TextStyle(
-                            fontSize: width * 0.04,
+                            fontSize: 20.sp,
                             fontWeight: FontWeight.bold,
                             // color: AppColors.blackColor,
                           ),
@@ -197,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               "More",
                               style: TextStyle(
                                 color: AppColors.fontGreyColor,
-                                fontSize: width * 0.035,
+                                fontSize: 20.sp,
                               ),
                             ),
                             Icon(
@@ -213,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   SizedBox(
                     height: 250.h,
-                    child: ListView.builder(
+                    child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemCount: bookProvider.trendingBooks.length,
                       itemBuilder: (context, index) {
@@ -225,22 +231,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           bookWorkModel: bookModel,
                         );
                       },
+                      separatorBuilder: (context, index) =>
+                          SizedBox(width: 10.w), // 👈 gap between books
                     ),
                   ),
 
                   // 📌 Recently Added Section
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 5,
-                      vertical: 5,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           "Recently Added",
                           style: TextStyle(
-                            fontSize: width * 0.04,
+                            fontSize: 20.sp,
                             fontWeight: FontWeight.bold,
                             // color: AppColors.blackColor,
                           ),
@@ -251,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               "More",
                               style: TextStyle(
                                 color: AppColors.fontGreyColor,
-                                fontSize: width * 0.035,
+                                fontSize: 20.sp,
                               ),
                             ),
                             Icon(
@@ -265,22 +270,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
 
-                  SizedBox(height: 20.h),
+                  SizedBox(height: 10.h),
 
                   SizedBox(
                     height: 250.h,
-                    child: ListView.builder(
+                    child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemCount: bookProvider.trendingBooks.length,
                       itemBuilder: (context, index) {
-                        final book = bookProvider.trendingBooks[index];
-                        final bookModel = BookWorkModel.fromJson(book);
+                        final bookJson = bookProvider.trendingBooks[index];
+                        final bookModel = BookWorkModel.fromJson(bookJson);
 
                         return BookCard(
                           key: ValueKey(bookModel.key),
                           bookWorkModel: bookModel,
                         );
                       },
+                      separatorBuilder: (context, index) =>
+                          SizedBox(width: 10.w), // 👈 gap between books
                     ),
                   ),
                 ],
