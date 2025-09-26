@@ -6,7 +6,6 @@ import 'package:book_hunt/screens/search/searched_item_screen.dart';
 import 'package:book_hunt/services/recent_search_service.dart';
 import 'package:book_hunt/widgets/book_card.dart';
 import 'package:book_hunt/widgets/color.dart';
-import 'package:book_hunt/widgets/subject_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -63,16 +62,14 @@ class _HomeScreenState extends State<HomeScreen> {
     await recentSearchService.addSearch(query);
     await _loadRecentSearches();
 
-    // ✅ Await the search
     await Provider.of<SearchBooksProvider>(
       context,
       listen: false,
     ).search(query);
 
-    // ✅ Pass query to screen
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => SearchedItemScreen()),
+      MaterialPageRoute(builder: (_) => const SearchedItemScreen()),
     );
   }
 
@@ -83,6 +80,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
+
         automaticallyImplyLeading: false,
         title: const Text(
           'Book Hunt',
@@ -95,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Divider(height: 1.h, color: AppColors.navBarGray),
           ),
+
           // 🔍 Search Bar + Suggestions
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -105,7 +105,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   focusNode: _focusNode,
                   decoration: InputDecoration(
                     filled: true,
-                    // fillColor: AppColors.searchGrey,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide.none,
@@ -113,21 +112,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     hintText: 'Search books...',
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.search),
-                      onPressed: () {
-                        _onSearch(searchController.text.trim());
-                      },
+                      onPressed: () => _onSearch(searchController.text.trim()),
                     ),
                   ),
                   onSubmitted: (value) => _onSearch(value.trim()),
                 ),
 
-                // 📌 Recent Searches Dropdown
                 if (showSuggestions && recentSearches.isNotEmpty)
                   Container(
                     margin: const EdgeInsets.only(top: 5),
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      // color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
@@ -147,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: () {
                             searchController.text = query;
                             FocusScope.of(context).unfocus();
-                            _onSearch(query); // sirf yehi chalega
+                            _onSearch(query);
                           },
                         );
                       }).toList(),
@@ -168,163 +163,102 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: const [
-                          SubjectChip(subject: "action"),
-                          SubjectChip(subject: "history"),
-                          SubjectChip(subject: "biography"),
-                          SubjectChip(subject: "places"),
-                          SubjectChip(subject: "fiction"),
-                          SubjectChip(subject: "animals"),
-                        ],
+                      child: Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children:
+                            [
+                              "Science",
+                              "History",
+                              "Technology",
+                              "Fiction",
+                              "Business",
+                              "Art",
+                            ].map((subject) {
+                              return ActionChip(
+                                label: Text(subject),
+                                onPressed: () {
+                                  searchController.text = subject;
+                                  _onSearch(subject);
+                                  setState(() {});
+                                },
+                              );
+                            }).toList(),
                       ),
                     ),
                   ),
 
                   // 📌 Trending Section
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 5,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Most Popular",
-                          style: TextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                            // color: AppColors.blackColor,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "More",
-                              style: TextStyle(
-                                color: AppColors.fontGreyColor,
-                                fontSize: 20.sp,
-                              ),
-                            ),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              size: width * 0.04,
-                              color: AppColors.fontGreyColor,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  SizedBox(
-                    height: 250.h,
-                    child:
-                        bookProvider.isLoading ||
-                            bookProvider.trendingBooks.isEmpty
-                        ? ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 5, // jitne shimmer cards dikhane hain
-                            itemBuilder: (context, index) =>
-                                const BookCardShimmer(),
-                            separatorBuilder: (context, index) =>
-                                SizedBox(width: 10.w),
-                          )
-                        : ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: bookProvider.trendingBooks.length,
-                            itemBuilder: (context, index) {
-                              final bookJson =
-                                  bookProvider.trendingBooks[index];
-                              final bookModel = BookWorkModel.fromJson(
-                                bookJson,
-                              );
-
-                              return BookCard(
-                                key: ValueKey(bookModel.key),
-                                bookWorkModel: bookModel,
-                              );
-                            },
-                            separatorBuilder: (context, index) =>
-                                SizedBox(width: 10.w),
-                          ),
-                  ),
+                  _buildSectionHeader("Most Popular", width),
+                  _buildBookList(bookProvider),
 
                   // 📌 Recently Added Section
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Recently Added",
-                          style: TextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                            // color: AppColors.blackColor,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "More",
-                              style: TextStyle(
-                                color: AppColors.fontGreyColor,
-                                fontSize: 20.sp,
-                              ),
-                            ),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              size: width * 0.04,
-                              color: AppColors.fontGreyColor,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  SizedBox(height: 10.h),
-
-                  SizedBox(
-                    height: 250.h,
-                    child:
-                        bookProvider.isLoading ||
-                            bookProvider.trendingBooks.isEmpty
-                        ? ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 5, // jitne shimmer cards dikhane hain
-                            itemBuilder: (context, index) =>
-                                const BookCardShimmer(),
-                            separatorBuilder: (context, index) =>
-                                SizedBox(width: 10.w),
-                          )
-                        : ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: bookProvider.trendingBooks.length,
-                            itemBuilder: (context, index) {
-                              final bookJson =
-                                  bookProvider.trendingBooks[index];
-                              final bookModel = BookWorkModel.fromJson(
-                                bookJson,
-                              );
-
-                              return BookCard(
-                                key: ValueKey(bookModel.key),
-                                bookWorkModel: bookModel,
-                              );
-                            },
-                            separatorBuilder: (context, index) =>
-                                SizedBox(width: 10.w),
-                          ),
-                  ),
+                  _buildSectionHeader("Recently Added", width),
+                  _buildBookList(bookProvider),
                 ],
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title, double width) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          ),
+          Row(
+            children: [
+              Text(
+                "More",
+                style: TextStyle(
+                  color: AppColors.fontGreyColor,
+                  fontSize: 20.sp,
+                ),
+              ),
+              Icon(
+                Icons.arrow_forward_ios,
+                size: width * 0.04,
+                color: AppColors.fontGreyColor,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBookList(BookProvider bookProvider) {
+    return SizedBox(
+      height: 250.h,
+      child: bookProvider.isLoading || bookProvider.trendingBooks.isEmpty
+          ? ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: 5,
+              itemBuilder: (context, index) => const BookCardShimmer(),
+              separatorBuilder: (context, index) => SizedBox(width: 10.w),
+            )
+          : ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: bookProvider.trendingBooks.length,
+              itemBuilder: (context, index) {
+                final bookJson = bookProvider.trendingBooks[index];
+                final bookModel = BookWorkModel.fromJson(bookJson);
+
+                return BookCard(
+                  key: ValueKey(bookModel.key),
+                  bookWorkModel: bookModel,
+                );
+              },
+              separatorBuilder: (context, index) => SizedBox(width: 10.w),
+            ),
     );
   }
 }

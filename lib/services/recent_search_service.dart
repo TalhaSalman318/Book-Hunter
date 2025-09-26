@@ -15,8 +15,8 @@ class RecentSearchService {
     searches.insert(0, query);
 
     // keep only last 10
-    if (searches.length > 10) {
-      searches = searches.sublist(0, 10);
+    if (searches.length > 5) {
+      searches = searches.sublist(0, 5);
     }
 
     await prefs.setStringList(_key, searches);

@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
                 darkTheme: ThemeData.dark(),
 
                 // 📌 Default route (jo sabse pehle open hogi)
-                initialRoute: AppRoutes.signIn,
+                initialRoute: AppRoutes.main,
 
                 // 📌 Hamara route generator
                 onGenerateRoute: AppRouter.generateRoute,

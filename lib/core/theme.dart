@@ -37,25 +37,21 @@ class AppTextStyles {
 }
 
 ThemeData appTheme = ThemeData(
-  // primaryColor: AppColors.primaryColor,
-  // scaffoldBackgroundColor: AppColors.backgroundColor,
+  useMaterial3: true,
   appBarTheme: const AppBarTheme(
-    // backgroundColor: AppColors.primaryColor,
-    foregroundColor: Colors.white,
+    backgroundColor: Colors.white,
+    foregroundColor: Colors.black,
+    surfaceTintColor: Colors.transparent,
     elevation: 0,
   ),
-  textTheme: TextTheme(
-    titleLarge: AppTextStyles.heading1,
-    bodyMedium: AppTextStyles.bodyText,
-    bodySmall: AppTextStyles.caption,
-  ),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(
-      // backgroundColor: AppColors.primaryColor,
-      foregroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(12)),
-      ),
-    ),
+);
+
+ThemeData darkAppTheme = ThemeData.dark().copyWith(
+  useMaterial3: true,
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Colors.black,
+    foregroundColor: Colors.white,
+    surfaceTintColor: Colors.transparent,
+    elevation: 0,
   ),
 );

@@ -50,7 +50,7 @@ class _SubjectBooksScreenState extends State<SubjectBooksScreen> {
             : GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, // 2 columns
-                  crossAxisSpacing: 12,
+                  crossAxisSpacing: 0,
                   mainAxisSpacing: 0,
                   childAspectRatio: 0.6, // Adjust as per BookCard size
                 ),

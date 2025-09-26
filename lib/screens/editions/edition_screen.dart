@@ -1,7 +1,9 @@
+import 'package:book_hunt/core/env.dart';
+import 'package:book_hunt/models/book_work.dart';
 import 'package:book_hunt/providers/editions_provider.dart';
+import 'package:book_hunt/widgets/book_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:book_hunt/models/edition.dart';
 
 class EditionsScreen extends StatefulWidget {
   final String workId;
@@ -13,12 +15,39 @@ class EditionsScreen extends StatefulWidget {
 }
 
 class _EditionsScreenState extends State<EditionsScreen> {
+  final searchController = TextEditingController();
+  List editions = [];
+  List filteredEditions = [];
+
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      context.read<EditionProvider>().fetchEditions(widget.workId);
+    Future.microtask(() async {
+      final provider = context.read<EditionProvider>();
+      await provider.fetchEditions(widget.workId);
+      setState(() {
+        editions = provider.editions;
+        filteredEditions = editions;
+      });
     });
+  }
+
+  void _filterEditions(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        filteredEditions = editions;
+      });
+    } else {
+      setState(() {
+        filteredEditions = editions
+            .where(
+              (edition) => (edition.title ?? "").toLowerCase().contains(
+                query.toLowerCase(),
+              ),
+            )
+            .toList();
+      });
+    }
   }
 
   @override
@@ -26,45 +55,49 @@ class _EditionsScreenState extends State<EditionsScreen> {
     final editionProvider = context.watch<EditionProvider>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Book Editions")),
-      body: editionProvider.isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : editionProvider.errorMessage != null
-          ? Center(
-              child: Text(
-                "Error: ${editionProvider.errorMessage}",
-                style: const TextStyle(color: Colors.red),
-              ),
-            )
-          : editionProvider.editions.isEmpty
-          ? const Center(child: Text("No editions found"))
-          : ListView.builder(
-              padding: const EdgeInsets.all(10),
-              itemCount: editionProvider.editions.length,
-              itemBuilder: (context, index) {
-                final edition = editionProvider.editions[index];
+      appBar: AppBar(title: const Text("Editions")),
+      body: Column(
+        children: [
+          Expanded(
+            child: editionProvider.isLoading
+                ? const SearchShimmer()
+                : editionProvider.errorMessage != null
+                ? Center(
+                    child: Text(
+                      "Error: ${editionProvider.errorMessage}",
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  )
+                : filteredEditions.isEmpty
+                ? const Center(child: Text("No editions found"))
+                : GridView.builder(
+                    padding: const EdgeInsets.all(12),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                          childAspectRatio: 0.65,
+                        ),
+                    itemCount: filteredEditions.length,
+                    itemBuilder: (context, index) {
+                      final edition = filteredEditions[index];
 
-                return Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  margin: const EdgeInsets.symmetric(vertical: 6),
-                  child: ListTile(
-                    title: Text(
-                      edition.title ?? "No Title",
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      "Publish Date: ${edition.publishDate ?? "Unknown"}",
-                    ),
-                    trailing: const Icon(Icons.arrow_forward_ios),
-                    onTap: () {
-                      // yahan baad mein edition detail screen khol sakte ho
+                      // Convert edition -> BookWorkModel (for BookCard)
+                      final bookModel = BookWorkModel(
+                        key: edition.key ?? "no-key-$index",
+                        title: edition.title ?? "No Title",
+                      );
+
+                      return BookCard(
+                        key: ValueKey(bookModel.key),
+                        bookWorkModel: bookModel,
+                      );
                     },
                   ),
-                );
-              },
-            ),
+          ),
+        ],
+      ),
     );
   }
 }
