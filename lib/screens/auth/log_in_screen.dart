@@ -25,142 +25,156 @@ class _LoginScreenState extends State<LoginScreen> {
     final auth = Provider.of<AuthProvider>(context);
 
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: double.infinity.w,
-            child: Image.asset(
-              'assets/login.jpg',
-              height: 250.h,
-              fit: BoxFit.cover,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: double.infinity.w,
+              child: Image.asset(
+                'assets/login.jpg',
+                height: 250.h,
+                fit: BoxFit.cover,
+              ),
+            ), // Add your image here
+            SizedBox(height: 15.h),
+
+            Text(
+              "   Email",
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
             ),
-          ), // Add your image here
-          SizedBox(height: 15.h),
 
-          Text(
-            "   Email",
-            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
-          ),
-
-          ReuseableTextfield(controller: _emailController, labelText: 'Email'),
-          SizedBox(height: 20.h),
-          Text(
-            "   Password",
-            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
-          ),
-          ReuseableTextfield(
-            controller: _passwordController,
-            labelText: 'Password',
-          ),
-          SizedBox(height: 20),
-          Center(
-            child: ReuseableButton(
-              onTap: () async {
-                try {
-                  await auth.logInWithEmail(
-                    _emailController.text.trim(),
-                    _passwordController.text.trim(),
-                  );
-
-                  // ✅ Success ke baad HomeScreen pr le jao
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const MainScreen()),
-                  );
-                } catch (_) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Email Sign-In failed")),
-                  );
-                }
-              },
-              text: 'Login',
+            ReuseableTextfield(
+              controller: _emailController,
+              labelText: 'Email',
             ),
-          ),
+            SizedBox(height: 20.h),
+            Text(
+              "   Password",
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
+            ),
+            ReuseableTextfield(
+              controller: _passwordController,
+              labelText: 'Password',
+            ),
+            SizedBox(height: 20),
+            Center(
+              child: ReuseableButton(
+                onTap: () async {
+                  try {
+                    await auth.logInWithEmail(
+                      _emailController.text.trim(),
+                      _passwordController.text.trim(),
+                    );
 
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Divider(
-                    thickness: 2,
-                    height: 12.h,
-                    color: AppColors.navBarGray,
+                    // ✅ Success ke baad HomeScreen pr le jao
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MainScreen(),
+                      ),
+                    );
+                  } catch (_) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Email Sign-In failed")),
+                    );
+                  }
+                },
+                text: 'Login',
+              ),
+            ),
+
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Divider(
+                      thickness: 2,
+                      height: 12.h,
+                      color: AppColors.navBarGray,
+                    ),
                   ),
                 ),
-              ),
-              Text(
-                "Or Login With",
-                style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w500),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Divider(
-                    thickness: 2,
-                    height: 12,
-                    color: AppColors.navBarGray,
+                Text(
+                  "Or Login With",
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
-              ),
-            ],
-          ),
-          Center(
-            child: ElevatedButton.icon(
-              icon: Image.asset(
-                'assets/google_logo.png',
-                height: 20.h,
-                width: 20.w,
-              ),
-              label: const Text("Continue with Google"),
-              onPressed: () async {
-                try {
-                  await auth.signInWithGoogle();
-
-                  // ✅ Success ke baad HomeScreen pr le jao
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const MainScreen()),
-                  );
-                } catch (_) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Google Sign-In failed")),
-                  );
-                }
-              },
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Divider(
+                      thickness: 2,
+                      height: 12,
+                      color: AppColors.navBarGray,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Don't have an account? "),
-              InkWell(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SignInScreen()),
+            Center(
+              child: ElevatedButton.icon(
+                icon: Image.asset(
+                  'assets/google_logo.png',
+                  height: 20.h,
+                  width: 20.w,
                 ),
-                child: Text(
-                  "Sign-Up",
-                  style: TextStyle(color: AppColors.mainColor),
-                ),
+                label: const Text("Continue with Google"),
+                onPressed: () async {
+                  try {
+                    await auth.signInWithGoogle();
+
+                    // ✅ Success ke baad HomeScreen pr le jao
+                    Navigator.pop(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MainScreen(),
+                      ),
+                    );
+                  } catch (_) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Google Sign-In failed")),
+                    );
+                  }
+                },
               ),
-            ],
-          ),
-          // const SizedBox(height: 30),
-          // if (auth.isSignedIn)
-          //   Column(
-          //     children: [
-          //       Text("Welcome, ${auth.user?.email ?? ''}"),
-          //       ElevatedButton(
-          //         onPressed: () => auth.signOut(),
-          //         child: const Text("Sign Out"),
-          //       ),
-          //     ],
-          //   ),
-        ],
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Don't have an account? "),
+                InkWell(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SignInScreen(),
+                    ),
+                  ),
+                  child: Text(
+                    "Sign-Up",
+                    style: TextStyle(color: AppColors.mainColor),
+                  ),
+                ),
+              ],
+            ),
+            // const SizedBox(height: 30),
+            // if (auth.isSignedIn)
+            //   Column(
+            //     children: [
+            //       Text("Welcome, ${auth.user?.email ?? ''}"),
+            //       ElevatedButton(
+            //         onPressed: () => auth.signOut(),
+            //         child: const Text("Sign Out"),
+            //       ),
+            //     ],
+            //   ),
+          ],
+        ),
       ),
     );
   }
