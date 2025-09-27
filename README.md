@@ -4,14 +4,10 @@ A new Flutter project.
 
 ## 📸 Screenshots
 
-### Splash Screen
-[![Splash](screenshots/splash_screen.jpg)](screenshots/splash_screen.jpg)
+<a href="screenshots/splash_screen.jpg"><img src="screenshots/splash_screen.jpg" width="250"/></a>
+<a href="screenshots/sign_up.jpg"><img src="screenshots/sign_up.jpg" width="250"/></a>
+<a href="screenshots/login.jpg"><img src="screenshots/login.jpg" width="250"/></a>
 
-### Home Screen
-[![Home](screenshots/2.png)](screenshots/2.png)
-
-### Search
-[![Search](screenshots/3.png)](screenshots/3.png)
 
 
 
