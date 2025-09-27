@@ -4,8 +4,8 @@ A new Flutter project.
 
 ## 📸 Screenshots
 
-<a href="screenshots/1.jpg"><img src="screenshots/1.jpg" width="250"/></a>
-<a href="screenshots/2.jpg"><img src="screenshots/2.jpg" width="250"/></a>
+<a href="screenshots/splash_screen.jpg"><img src="screenshots/splash_screen.jpg" width="250"/></a>
+<a href="screenshots/sign_up.jpg"><img src="screenshots/sign_up.jpg" width="250"/></a>
 <a href="screenshots/3.jpg"><img src="screenshots/3.jpg" width="250"/></a>
 <a href="screenshots/4.jpg"><img src="screenshots/4.jpg" width="250"/></a>
 <a href="screenshots/5.jpg"><img src="screenshots/5.jpg" width="250"/></a>
