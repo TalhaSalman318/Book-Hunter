@@ -71,24 +71,34 @@ class _EditionsScreenState extends State<EditionsScreen> {
                 : filteredEditions.isEmpty
                 ? const Center(child: Text("No editions found"))
                 : GridView.builder(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(10),
+                    itemCount: editionProvider.editions.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 0,
                           childAspectRatio: 0.65,
                         ),
-                    itemCount: filteredEditions.length,
                     itemBuilder: (context, index) {
-                      final edition = filteredEditions[index];
+                      final edition = editionProvider.editions[index];
 
-                      // Convert edition -> BookWorkModel (for BookCard)
+                      // edition se workId nikaalo
+                      final workId = (edition.works?.isNotEmpty ?? false)
+                          ? edition.works!.first.key?.replaceAll("/works/", "")
+                          : null;
+
+                      if (workId == null) return const SizedBox.shrink();
+
                       final bookModel = BookWorkModel(
-                        key: edition.key ?? "no-key-$index",
+                        key: workId,
                         title: edition.title ?? "No Title",
+                        covers:
+                            (edition.covers != null &&
+                                edition.covers!.isNotEmpty)
+                            ? edition.covers
+                            : [], // yahan list pass karo
                       );
-
                       return BookCard(
                         key: ValueKey(bookModel.key),
                         bookWorkModel: bookModel,

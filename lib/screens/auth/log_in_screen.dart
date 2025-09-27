@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                   } catch (_) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Email Sign-In failed")),
+                      const SnackBar(content: Text("Email Log-In failed")),
                     );
                   }
                 },
@@ -104,6 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
+                SizedBox(height: 10.w),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -116,6 +117,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
+            const SizedBox(height: 10),
+
             Center(
               child: ElevatedButton.icon(
                 icon: Image.asset(
@@ -129,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     await auth.signInWithGoogle();
 
                     // ✅ Success ke baad HomeScreen pr le jao
-                    Navigator.pop(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const MainScreen(),
@@ -143,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

@@ -44,6 +44,8 @@ dependencies:
   google_sign_in: 6.2.1
   flutter_screenutil: ^5.9.3
   shimmer: ^3.0.0
+  flutter_svg: ^2.2.1
+  animated_text_kit: ^4.2.3
 
 dev_dependencies:
   flutter_test:
@@ -70,7 +72,11 @@ flutter:
   assets:
     - assets/login.jpg
     - assets/google_logo.png
-
+    - assets/heart.png
+    - assets/home.png
+    - assets/profile.png
+    - assets/search.png
+    - assets/splash.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

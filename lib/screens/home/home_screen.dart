@@ -2,6 +2,7 @@ import 'package:book_hunt/core/env.dart';
 import 'package:book_hunt/models/book_work.dart';
 import 'package:book_hunt/providers/book_provider.dart';
 import 'package:book_hunt/providers/cover_provider.dart';
+import 'package:book_hunt/screens/home/more_screen.dart';
 import 'package:book_hunt/screens/search/searched_item_screen.dart';
 import 'package:book_hunt/services/recent_search_service.dart';
 import 'package:book_hunt/widgets/book_card.dart';
@@ -81,7 +82,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.transparent,
-
         automaticallyImplyLeading: false,
         title: const Text(
           'Book Hunt',
@@ -189,11 +189,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
 
                   // 📌 Trending Section
-                  _buildSectionHeader("Most Popular", width),
+                  _buildSectionHeader(
+                    "Most Popular",
+                    width,
+                    bookProvider.trendingBooks,
+                  ),
                   _buildBookList(bookProvider),
 
                   // 📌 Recently Added Section
-                  _buildSectionHeader("Recently Added", width),
+                  _buildSectionHeader(
+                    "Recently Added",
+                    width,
+                    bookProvider.trendingBooks,
+                  ),
                   _buildBookList(bookProvider),
                 ],
               ),
@@ -204,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildSectionHeader(String title, double width) {
+  Widget _buildSectionHeader(String title, double width, List books) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Row(
@@ -214,21 +222,33 @@ class _HomeScreenState extends State<HomeScreen> {
             title,
             style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
           ),
-          Row(
-            children: [
-              Text(
-                "More",
-                style: TextStyle(
-                  color: AppColors.fontGreyColor,
-                  fontSize: 20.sp,
+          InkWell(
+            onTap: () {
+              // Navigate to MoreBooksScreen
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) =>
+                      MoreBooksScreen(sectionTitle: title, books: books),
                 ),
-              ),
-              Icon(
-                Icons.arrow_forward_ios,
-                size: width * 0.04,
-                color: AppColors.fontGreyColor,
-              ),
-            ],
+              );
+            },
+            child: Row(
+              children: [
+                Text(
+                  "More",
+                  style: TextStyle(
+                    color: AppColors.fontGreyColor,
+                    fontSize: 20.sp,
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: width * 0.04,
+                  color: AppColors.fontGreyColor,
+                ),
+              ],
+            ),
           ),
         ],
       ),

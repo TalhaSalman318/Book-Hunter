@@ -1,5 +1,6 @@
 import 'package:book_hunt/providers/theme_provider.dart';
 import 'package:book_hunt/screens/auth/log_in_screen.dart';
+import 'package:book_hunt/screens/main/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -89,7 +90,7 @@ class SettingsScreen extends StatelessWidget {
               if (context.mounted) {
                 Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  MaterialPageRoute(builder: (_) => const MainScreen()),
                   (route) => false,
                 );
               }

@@ -21,6 +21,8 @@ class AuthProvider with ChangeNotifier {
   /// 🔹 Google Sign-In
   Future<void> signInWithGoogle() async {
     try {
+      await _googleSignIn.signOut(); // ✅ pehle logout karo
+
       final googleUser = await _googleSignIn.signIn();
       if (googleUser == null) return; // user cancelled
 
@@ -71,8 +73,9 @@ class AuthProvider with ChangeNotifier {
 
   /// 🔹 Sign-Out
   Future<void> signOut() async {
-    await _auth.signOut();
+    await _googleSignIn.disconnect(); // ✅ force remove account
     await _googleSignIn.signOut();
+    await _auth.signOut();
     _user = null;
     notifyListeners();
   }

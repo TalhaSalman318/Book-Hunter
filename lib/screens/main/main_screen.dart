@@ -1,3 +1,4 @@
+import 'package:book_hunt/core/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:book_hunt/providers/bottom_nav_provider.dart';
@@ -27,21 +28,49 @@ class MainScreen extends StatelessWidget {
           bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             currentIndex: nav.currentIndex,
-            onTap: nav.setIndex, // expects (int) => void
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search),
+            onTap: nav.setIndex,
+            selectedItemColor:
+                AppColors.whiteColor, // 🔹 selected icon/text color
+            backgroundColor: AppColors.mainColor, // 🔹 background color
 
+            showUnselectedLabels: true, // 🔹 unselected label bhi show karo
+            // expects (int) => void
+            items: [
+              BottomNavigationBarItem(
+                icon: Image.asset(
+                  "assets/home.png",
+                  height: 24,
+                  width: 24,
+                  color: Colors.white,
+                ),
+                label: "Home",
+              ),
+              BottomNavigationBarItem(
+                icon: Image.asset(
+                  "assets/search.png",
+                  height: 24,
+                  width: 24,
+                  color: Colors.white,
+                ),
                 label: "Search",
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.favorite),
+                icon: Image.asset(
+                  "assets/heart.png",
+                  height: 24,
+                  width: 24,
+                  color: Colors.white,
+                ),
                 label: "Favorites",
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: "Settings",
+                icon: Image.asset(
+                  "assets/profile.png",
+                  height: 24,
+                  width: 24,
+                  color: Colors.white,
+                ),
+                label: "Profile",
               ),
             ],
           ),

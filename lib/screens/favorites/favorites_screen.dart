@@ -1,4 +1,5 @@
 import 'package:book_hunt/providers/favourites_provider.dart';
+import 'package:book_hunt/providers/auth_provider.dart';
 import 'package:book_hunt/screens/work_detail/work_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,6 +11,7 @@ class FavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final favoriteProvider = Provider.of<FavoriteProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -19,11 +21,20 @@ class FavoritesScreen extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      body: favoriteProvider.favorites.isEmpty
+      body: authProvider.user == null
+          // ✅ Agar user login nahi hai
+          ? const Center(
+              child: Text(
+                "No favorites (Login required)",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            )
+          // ✅ Agar login hai to favorites check karo
+          : favoriteProvider.favorites.isEmpty
           ? const Center(
               child: Text(
                 "No favorites yet",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             )
           : ListView.builder(
@@ -74,7 +85,7 @@ class FavoritesScreen extends StatelessWidget {
                           ),
                           SizedBox(width: 12.w),
 
-                          // Title + extra info
+                          // Title
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
