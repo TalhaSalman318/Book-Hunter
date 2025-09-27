@@ -2,6 +2,19 @@
 
 A new Flutter project.
 
+## 📸 Screenshots
+
+### Splash Screen
+[![Splash](screenshots/splash_screen.jpg)](screenshots/splash_screen.jpg)
+
+### Home Screen
+[![Home](screenshots/2.png)](screenshots/2.png)
+
+### Search
+[![Search](screenshots/3.png)](screenshots/3.png)
+
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
